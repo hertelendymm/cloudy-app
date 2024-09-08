@@ -2,6 +2,9 @@
 
 Cloudy is a minimalist weather app designed to keep you informed and prepared. With its accurate and up-to-date forecasts, you'll always know what to expect.
 
+## Download:
+* **Android:** [Google Play Store](https://play.google.com/store/apps/details?id=com.flutter.hertelendymm.cloudy&hl=en_SG)
+
 ## App Screenshots:
 <img src="screenshots/cloudy_1.png" alt="Cloudy App Screenshot 1"/>
 
