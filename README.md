@@ -1,16 +1,19 @@
 # cloudy_app
 
-Minimalist Weather App.
+Cloudy is a minimalist weather app designed to keep you informed and prepared. With its accurate and up-to-date forecasts, you'll always know what to expect.
 
-## Getting Started
+## App Screenshots:
+<img src="screenshots/cloudy_1.png" alt="Cloudy App Screenshot 1"/>
 
-This project is a starting point for a Flutter application.
+## Key Features:
+- Intuitive Interface: Enjoy a clean and minimalist design for easy navigation.
+- Personalized Forecasts: Get weather updates tailored to your specific location.
+- Dark Mode: Choose the theme that best suits your preferences and viewing conditions.
+- City Search: Explore weather conditions in cities around the world.
+- Multi-Day Forecasts: Plan ahead with current, 48-hour, and 7-day forecasts.
 
-A few resources to get you started if this is your first Flutter project:
+## Data Source:
+- Weather data provided by the [OpenWeatherMap](https://openweathermap.org/api)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Icons:
+- Icons: [FontAwesome](https://fontawesome.com/icons)
