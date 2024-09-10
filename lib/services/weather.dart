@@ -31,24 +31,24 @@ class WeatherModel {
 
   WeatherIcon getWeatherIcon(int condition) {
     if (condition < 300) {
-      return new WeatherIcon(FontAwesomeIcons.bolt, Colors.yellow); //'🌩';
+      return WeatherIcon(FontAwesomeIcons.bolt, Colors.yellow); //'🌩';
     } else if (condition < 400) {
-      return new WeatherIcon(
+      return WeatherIcon(
           FontAwesomeIcons.cloudShowersHeavy, Colors.lightBlue); //'🌧';
     } else if (condition < 600) {
-      return new WeatherIcon(
+      return WeatherIcon(
           FontAwesomeIcons.cloudRain, Colors.lightBlue); //'☔️';
     } else if (condition < 700) {
-      return new WeatherIcon(
+      return WeatherIcon(
           FontAwesomeIcons.snowflake, Colors.lightBlue); //'☃️';
     } else if (condition < 800) {
-      return new WeatherIcon(FontAwesomeIcons.smog, Colors.lightBlue); //'🌫';
+      return WeatherIcon(FontAwesomeIcons.smog, Colors.lightBlue); //'🌫';
     } else if (condition == 800) {
-      return new WeatherIcon(Icons.wb_sunny, Colors.yellow); //'☀️';//'☀️';
+      return WeatherIcon(Icons.wb_sunny, Colors.yellow); //'☀️';//'☀️';
     } else if (condition <= 804) {
-      return new WeatherIcon(Icons.cloud, Colors.lightBlue); //'☁️';
+      return WeatherIcon(Icons.cloud, Colors.lightBlue); //'☁️';
     } else {
-      return new WeatherIcon(
+      return WeatherIcon(
           FontAwesomeIcons.faceGrinBeamSweat, Colors.yellow); //'🤷‍';
     }
   }
