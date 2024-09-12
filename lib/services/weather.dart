@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
-const apiKey = 'API_KEY';
+/// TODO remove apiKey
+const apiKey = '4ef2575bccd3ceab784dcd713ba20758';
+// const apiKey = 'API_KEY';
 const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather';
 
-class WeatherModel {
+class WeatherServices {
   Future<dynamic> getCityWeather(String cityName) async {
     NetworkHelper networkHelper = NetworkHelper(
         '$openWeatherMapURL?q=$cityName&appid=$apiKey&units=metric');
