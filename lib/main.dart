@@ -1,6 +1,9 @@
 import 'package:cloudy_app/services/weather.dart';
+import 'package:cloudy_app/widgets/button_rounded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 
 void main() {
   SystemChrome.setPreferredOrientations([
@@ -35,16 +38,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var weatherData;
   bool _isLoading = true;
+  bool _isCurrentLoctaion = true;
 
   @override
   void initState() {
     super.initState();
-    // _isLoading = true;
-    getLocationData();
+    _isLoading = true;
+    if(_isCurrentLoctaion){
+      getLocationData();
+    }
   }
 
   void getLocationData() async {
     weatherData = await WeatherModel().getLocationWeather();
+
     print("$weatherData=====================");
     setState(() {
       _isLoading = false;
@@ -54,19 +61,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return _isLoading ? _loadingPage() : _currentLocation();
-    // return Scaffold(
-    //   body: SafeArea(child: _isLoading ?
-    //   const CircularProgressIndicator():
-    //   Container(child: Text(weatherData.toString()),),
-    //   ),
-    // );
   }
 
   Widget _loadingPage(){
     return const Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
-      ),
+        child: CircularProgressIndicator()
+      )
     );
   }
 
@@ -82,14 +83,18 @@ class _MyHomePageState extends State<MyHomePage> {
         // backgroundColor: isNight ? Colors.black : Colors.white,
         leading: GestureDetector(
           onTap: () async {
-            var weatherData = await weather.getLocationWeather();
-            updateUI(weatherData);
+            /// Refresh Button
+            setState(() {
+              _isLoading = true;
+            });
+            // var weatherData = await weather.getLocationWeather();
+            // updateUI(weatherData);
           },
           child: Padding(
             padding:
             const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
             child: Icon(
-              FontAwesomeIcons.syncAlt,
+              FontAwesomeIcons.rotate,
               color: Theme.of(context).iconTheme.color,
               // color: isNight ? Colors.white : Colors.black,
             ),
@@ -108,9 +113,12 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: <Widget>[
           GestureDetector(
             onTap: () async {
-              var weatherData = await weather.getLocationWeather();
-              updateUI(weatherData);
-              build(context);
+              // var weatherData = await weather.getLocationWeather();
+              // updateUI(weatherData);
+              // build(context);
+              setState(() {
+                _isLoading = true;
+              });
             },
             child: ChangeThemeButtonWidget(),
           ),
@@ -127,8 +135,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               );
               if (typedName != null) {
-                var weatherData = await weather.getCityWeather(typedName);
-                updateUI(weatherData);
+
+                WeatherModel newWeather = WeatherModel();
+                weatherData = await newWeather.getCityWeather(typedName);
+                getLocationData(false);
+                // updateUI(weatherData);
               }
             },
             child: Padding(
@@ -209,6 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                   ButtonRounded(
+                    text: 'Forecast',
                     isNightMode: themeProvider.isDarkMode,
                     function: () {
                       showInterstitialAd();
