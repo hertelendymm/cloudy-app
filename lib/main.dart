@@ -1,9 +1,9 @@
 import 'package:cloudy_app/constats.dart';
-import 'package:cloudy_app/models/forecast_model.dart';
+import 'package:cloudy_app/models/weather_model.dart';
 import 'package:cloudy_app/models/weathericon_model.dart';
 import 'package:cloudy_app/pages/forecast_page.dart';
 import 'package:cloudy_app/pages/search_page.dart';
-import 'package:cloudy_app/services/weather.dart';
+import 'package:cloudy_app/services/weather_services.dart';
 import 'package:cloudy_app/widgets/button_rounded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +41,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late ForecastModel forecastModel;
+  late WeatherModel forecastModel;
   var weatherData;
   bool _isLoading = true;
   // bool _isCurrentLocation = true;
@@ -69,11 +69,11 @@ class _MyHomePageState extends State<MyHomePage> {
     if (otherLocation != '') {
       print('Other location: $otherLocation');
       /// TODO: Load other location's data
-      weatherData = await WeatherServices().getCityWeather(otherLocation);
+      weatherData = await WeatherHelper().getCityWeather(otherLocation);
     } else {
       print('Current location');
       /// Load currents location's data
-      weatherData = await WeatherServices().getLocationWeather();
+      weatherData = await WeatherHelper().getLocationWeather();
     }
 
     print("$weatherData=====================");
@@ -86,15 +86,15 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> loadWeatherData() async {
     if (weatherData != null) {
       setState(() {
-        forecastModel = ForecastModel.fromJson(weatherData);
-        weatherIcon = WeatherServices()
+        forecastModel = WeatherModel.fromJson(weatherData);
+        weatherIcon = WeatherHelper()
             .getWeatherIcon(int.parse(forecastModel.condition));
         print(forecastModel.toString());
         print("weatherIcon: ${weatherIcon.toString()}");
       });
     } else {
       print("WEATHER DATA IS NULL HERE -------------------");
-      forecastModel = ForecastModel(
+      forecastModel = WeatherModel(
         lon: "0.0",
         lat: "0.0",
         temperature: "0",
@@ -144,13 +144,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        title: Center(
-          child: Text(
-            'Cloudy App',
-            style: kCityTitleTextStyleNight.copyWith(
-              fontSize: 20.0,
-              color: Colors.white,
-            ),
+        centerTitle: true,
+        title: Text(
+          'Cloudy App',
+          style: kCityTitleTextStyleNight.copyWith(
+            fontSize: 20.0,
+            color: Colors.white,
           ),
         ),
         actions: <Widget>[
@@ -197,33 +196,36 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _weatherTitle(),
-            Icon(
-              weatherIcon.iconData,
-              color: weatherIcon.color,
-              size: MediaQuery.of(context).size.width / 2.5,
-            ),
-            _weatherDescription(),
-            ButtonRounded(
-              text: 'Forecast',
-              isNightMode: true,
-              function: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ForecastPage(
-                            lat: forecastModel.lat,
-                            lon: forecastModel.lon,
-                            // isNight: isNight,
-                          ))
-                );
-              },
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              _weatherTitle(),
+              Icon(
+                weatherIcon.iconData,
+                color: weatherIcon.color,
+                size: MediaQuery.of(context).size.width / 2.5,
+              ),
+              _weatherDescription(),
+              ButtonRounded(
+                text: 'Forecast',
+                isNightMode: true,
+                function: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ForecastPage(
+                              lat: forecastModel.lat,
+                              lon: forecastModel.lon,
+                              // isNight: isNight,
+                            ))
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

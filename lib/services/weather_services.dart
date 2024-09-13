@@ -1,6 +1,6 @@
 import 'package:cloudy_app/models/weathericon_model.dart';
-import 'package:cloudy_app/services/location.dart';
-import 'package:cloudy_app/services/networking.dart';
+import 'package:cloudy_app/services/location_services.dart';
+import 'package:cloudy_app/services/networking_services.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,7 +11,7 @@ const apiKey = '4ef2575bccd3ceab784dcd713ba20758';
 const openWeatherMapCURRENT = 'https://api.openweathermap.org/data/2.5/weather';
 const openWeatherMapONECALL = 'https://api.openweathermap.org/data/2.5/onecall';
 
-class WeatherServices {
+class WeatherHelper {
   Future<dynamic> getCityWeather(String cityName) async {
     NetworkHelper networkHelper = NetworkHelper(
         '$openWeatherMapCURRENT?q=$cityName&appid=$apiKey&units=metric');
@@ -21,7 +21,7 @@ class WeatherServices {
   }
 
   Future<dynamic> getLocationWeather() async {
-    Location location = Location();
+    LocationHelper location = LocationHelper();
     Position pos = await location.determinePosition();
 
     NetworkHelper networkHelper = NetworkHelper(

@@ -18,7 +18,7 @@ class ButtonRounded extends StatelessWidget {
     return GestureDetector(
       onTap: ()=> function(),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.8,
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.1,
         decoration: BoxDecoration(
             color: isNightMode

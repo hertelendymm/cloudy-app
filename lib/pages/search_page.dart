@@ -18,11 +18,10 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
+        centerTitle: true,
         backgroundColor: Colors.black,
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: ()=> Navigator.pop(context),
           icon: const Icon(FontAwesomeIcons.angleLeft,
               color: Colors.white, size: 40.0),
         ),
@@ -36,7 +35,7 @@ class _SearchPageState extends State<SearchPage> {
             Column(
               children: <Widget>[
                 Container(
-                    padding: const EdgeInsets.all(24.0),
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: TextField(
                         style: const TextStyle(color: Colors.black),
                         decoration: kTextFieldInputDecorationNight,
