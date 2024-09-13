@@ -1,6 +1,6 @@
 import 'package:cloudy_app/models/weathericon_model.dart';
-import 'package:cloudy_app/services/location_services.dart';
-import 'package:cloudy_app/services/networking_services.dart';
+import 'package:cloudy_app/services/location_helper.dart';
+import 'package:cloudy_app/services/networking_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';

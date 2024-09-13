@@ -3,7 +3,7 @@ import 'package:cloudy_app/models/weather_model.dart';
 import 'package:cloudy_app/models/weathericon_model.dart';
 import 'package:cloudy_app/pages/forecast_page.dart';
 import 'package:cloudy_app/pages/search_page.dart';
-import 'package:cloudy_app/services/weather_services.dart';
+import 'package:cloudy_app/services/weather_helper.dart';
 import 'package:cloudy_app/widgets/button_rounded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
