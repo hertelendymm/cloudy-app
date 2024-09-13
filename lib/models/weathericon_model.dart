@@ -17,4 +17,10 @@ class WeatherIcon {
   set iconData(IconData value) {
     _iconData = value;
   }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'WeatherIconModel{_iconData: $_iconData, _color: $_color\n';
+  }
 }

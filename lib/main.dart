@@ -1,5 +1,7 @@
 import 'package:cloudy_app/constats.dart';
 import 'package:cloudy_app/models/forecast_model.dart';
+import 'package:cloudy_app/models/weathericon_model.dart';
+import 'package:cloudy_app/pages/forecast_page.dart';
 import 'package:cloudy_app/pages/search_page.dart';
 import 'package:cloudy_app/services/weather.dart';
 import 'package:cloudy_app/widgets/button_rounded.dart';
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Cloudy ',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -41,15 +44,20 @@ class _MyHomePageState extends State<MyHomePage> {
   late ForecastModel forecastModel;
   var weatherData;
   bool _isLoading = true;
-  bool _isCurrentLoctaion = true;
+  // bool _isCurrentLocation = true;
+  String otherLocation = "";
+  WeatherIcon weatherIcon =
+      WeatherIcon(FontAwesomeIcons.circleExclamation, Colors.red);
 
   @override
   void initState() {
     super.initState();
-    _isLoading = true;
-    if (_isCurrentLoctaion) {
-      getCurrentLocationData();
-    }
+    print('Init State -------');
+    // _isLoading = true;
+    getLocationData();
+    // if (_isCurrentLocation) {
+    // getCurrentLocationData();
+    // }
     // if(weatherData != null) {
     //   loadWeatherData();
     // }else{
@@ -57,8 +65,17 @@ class _MyHomePageState extends State<MyHomePage> {
     // }
   }
 
-  void getCurrentLocationData() async {
-    weatherData = await WeatherServices().getLocationWeather();
+  void getLocationData() async {
+    if (otherLocation != '') {
+      print('Other location: $otherLocation');
+      /// TODO: Load other location's data
+      weatherData = await WeatherServices().getCityWeather(otherLocation);
+    } else {
+      print('Current location');
+      /// Load currents location's data
+      weatherData = await WeatherServices().getLocationWeather();
+    }
+
     print("$weatherData=====================");
     await loadWeatherData();
     // setState(() {
@@ -70,13 +87,26 @@ class _MyHomePageState extends State<MyHomePage> {
     if (weatherData != null) {
       setState(() {
         forecastModel = ForecastModel.fromJson(weatherData);
+        weatherIcon = WeatherServices()
+            .getWeatherIcon(int.parse(forecastModel.condition));
         print(forecastModel.toString());
+        print("weatherIcon: ${weatherIcon.toString()}");
       });
     } else {
       print("WEATHER DATA IS NULL HERE -------------------");
+      forecastModel = ForecastModel(
+        lon: "0.0",
+        lat: "0.0",
+        temperature: "0",
+        condition: "-1",
+        description: "Unable to get weather data",
+        cityName: "Error",
+      );
+      weatherIcon = WeatherIcon(FontAwesomeIcons.circleExclamation, Colors.red);
     }
     setState(() {
       _isLoading = false;
+      print('Loading is done.');
     });
   }
 
@@ -86,7 +116,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _loadingPage() {
-    return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    return const Scaffold(
+      backgroundColor: Colors.black,
+        body: Center(child: CircularProgressIndicator(color: Colors.white,)));
   }
 
   Widget _currentLocation() {
@@ -94,17 +126,15 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Theme
-            .of(context)
-            .scaffoldBackgroundColor,
+        backgroundColor: Colors.black,
         leading: GestureDetector(
-          onTap: () async {
+          onTap: () {
             /// Refresh Button
             setState(() {
-              _isCurrentLoctaion = false;
+              otherLocation = '';
+              _isLoading = true;
             });
-            // var weatherData = await weather.getLocationWeather();
-            // updateUI(weatherData);
+            getLocationData();
           },
           child: const Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
@@ -142,140 +172,109 @@ class _MyHomePageState extends State<MyHomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return SearchPage();
-                    // return CityScreen(isNight: isNight);
+                    return const SearchPage();
                   },
                 ),
               );
               if (typedName != null) {
-                WeatherServices newWeather = WeatherServices();
-                weatherData = await newWeather.getCityWeather(typedName);
+                print('typeName: $typedName');
                 setState(() {
-                  _isCurrentLoctaion = false;
+                  _isLoading = true;
+                  otherLocation = typedName;
                 });
-                // updateUI(weatherData);
+                getLocationData();
               }
             },
-            child: Padding(
+            child: const Padding(
               padding:
-              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                  EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
               child: Icon(
                 FontAwesomeIcons.magnifyingGlassLocation,
-                color: Theme
-                    .of(context)
-                    .iconTheme
-                    .color,
-                // color: isNight ? Colors.white : Colors.black,
-              ),
+                color: Colors.white
+              )
             ),
           ),
         ],
       ),
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        'Current weather:',
-                        textAlign: TextAlign.center,
-                        style: kCityTextStyle.copyWith(
-                          fontSize: 16.0,
-                          color: Theme
-                              .of(context)
-                              .iconTheme
-                              .color,
-                          // color: isNight ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      Text(
-                        '${forecastModel.description.toUpperCase()}',
-                        textAlign: TextAlign.center,
-                        style: kCityTextStyle.copyWith(
-                          fontSize: 20.0,
-                          color: Theme
-                              .of(context)
-                              .iconTheme
-                              .color,
-                          // color: isNight ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Icon(
-                    WeatherServices().getWeatherIcon(int.parse(forecastModel.condition)) as IconData ,
-                    color: weatherData.weatherIcon.color,
-                    size: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 3,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            FontAwesomeIcons.thermometerHalf,
-                            color: Theme
-                                .of(context)
-                                .iconTheme
-                                .color,
-                            // color: isNight ? Colors.white : Colors.black,
-                          ),
-                          const SizedBox(width: 10.0),
-                          Text(
-                            '$forecastModel.temperature°C',
-                            style: kTempTextStyle.copyWith(
-                              fontSize: 25.0,
-                              color: Theme
-                                  .of(context)
-                                  .iconTheme
-                                  .color,
-                              // color: isNight ? Colors.white : Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        forecastModel.cityName,
-                        style: kTempTextStyle.copyWith(
-                          fontSize: 16.0,
-                          color: Theme
-                              .of(context)
-                              .iconTheme
-                              .color,
-                          // color: isNight ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  ButtonRounded(
-                    text: 'Forecast',
-                    isNightMode: true,
-                    function: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           ForecastScreen(
-                      //             lat: lat,
-                      //             lon: lon,
-                      //             // isNight: isNight,
-                      //           )),
-                      // );
-                    },
-                  )
-                ],
+            _weatherTitle(),
+            Icon(
+              weatherIcon.iconData,
+              color: weatherIcon.color,
+              size: MediaQuery.of(context).size.width / 2.5,
+            ),
+            _weatherDescription(),
+            ButtonRounded(
+              text: 'Forecast',
+              isNightMode: true,
+              function: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ForecastPage(
+                            lat: forecastModel.lat,
+                            lon: forecastModel.lon,
+                            // isNight: isNight,
+                          ))
+                );
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _weatherTitle() {
+    return Column(
+      children: [
+        Text('Current weather:',
+            textAlign: TextAlign.center,
+            style: kCityTextStyle.copyWith(
+                fontSize: 20.0, color: Colors.white)),
+        Text('${forecastModel.description.toUpperCase()}',
+            textAlign: TextAlign.center,
+            style: kCityTextStyle.copyWith(
+                fontSize: 24.0, color: Colors.white)),
+      ],
+    );
+  }
+
+  Widget _weatherDescription(){
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const Icon(
+              FontAwesomeIcons.temperatureHalf,
+              color: Colors.white,
+              size: 28,
+            ),
+            const SizedBox(width: 6.0),
+            Text(
+              '${forecastModel.temperature}°C',
+              style: kTempTextStyle.copyWith(
+                fontSize: 34.0,
+                color: Colors.white,
               ),
             ),
           ],
         ),
-      ),
+        Text(
+          forecastModel.cityName,
+          style: kTempTextStyle.copyWith(
+            fontSize: 20.0,
+            color: Colors.white,
+            // color: isNight ? Colors.white : Colors.black,
+          ),
+        ),
+      ],
     );
   }
 }

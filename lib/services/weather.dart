@@ -8,12 +8,13 @@ import 'package:geolocator/geolocator.dart';
 /// TODO remove apiKey
 const apiKey = '4ef2575bccd3ceab784dcd713ba20758';
 // const apiKey = 'API_KEY';
-const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather';
+const openWeatherMapCURRENT = 'https://api.openweathermap.org/data/2.5/weather';
+const openWeatherMapONECALL = 'https://api.openweathermap.org/data/2.5/onecall';
 
 class WeatherServices {
   Future<dynamic> getCityWeather(String cityName) async {
     NetworkHelper networkHelper = NetworkHelper(
-        '$openWeatherMapURL?q=$cityName&appid=$apiKey&units=metric');
+        '$openWeatherMapCURRENT?q=$cityName&appid=$apiKey&units=metric');
 
     var weatherData = await networkHelper.getData();
     return weatherData;
@@ -22,17 +23,33 @@ class WeatherServices {
   Future<dynamic> getLocationWeather() async {
     Location location = Location();
     Position pos = await location.determinePosition();
-    // await location.getCurrentLocation();
 
     NetworkHelper networkHelper = NetworkHelper(
-        '$openWeatherMapURL?lat=${pos.latitude}&lon=${pos.longitude}&appid=$apiKey&units=metric');
+        '$openWeatherMapCURRENT?lat=${pos.latitude}&lon=${pos.longitude}&appid=$apiKey&units=metric');
 
     var weatherData = await networkHelper.getData();
     return weatherData;
   }
 
+  Future<dynamic> getWeatherForecast48h7d({
+    required String exclude,
+    required String lon,
+    required String lat,
+  }) async {
+    /// Exclude: (String) --> current/minutely/hourly/daily/alerts (write one of these)
+    NetworkHelper networkHelper = NetworkHelper(
+        '$openWeatherMapONECALL?lat=$lat&lon=$lon&$exclude=hourly}&appid=$apiKey&units=metric');
+
+    var weatherData = await networkHelper.getData();
+    print('getWeatherForecast: \n${weatherData.toString()}');
+    return weatherData;
+  }
+
   WeatherIcon getWeatherIcon(int condition) {
-    if (condition < 300) {
+    if (condition < 0) {
+      /// Negative numbers in case weatherData loaded with an error
+      return WeatherIcon( FontAwesomeIcons.faceGrinBeamSweat, Colors.yellow); //'🤷‍';
+    }else if (condition < 300) {
       return WeatherIcon(FontAwesomeIcons.bolt, Colors.yellow); //'🌩';
     } else if (condition < 400) {
       return WeatherIcon(

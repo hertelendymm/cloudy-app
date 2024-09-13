@@ -16,7 +16,7 @@ class ButtonRounded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=> function,
+      onTap: ()=> function(),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.height * 0.1,

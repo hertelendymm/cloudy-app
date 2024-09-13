@@ -47,7 +47,9 @@ class _SearchPageState extends State<SearchPage> {
                     text: 'Get Weather',
                     isNightMode: true,
                     function: () {
+                      print('Close Serach Page');
                       Navigator.pop(context, cityName);
+                      print('Search page closed');
                     })
               ],
             ),
