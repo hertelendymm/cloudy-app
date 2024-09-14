@@ -273,26 +273,26 @@ class _ForecastPageState extends State<ForecastPage> {
           ),
           (forecast.timeText == '10 PM' || forecast.timeText == '11 PM' ||forecast.timeText ==  '12 AM')
               ? Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  height: 1.0,
-                  color: Colors.white,
-                ),
-                const Text('Next Day',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Spartan MB',
-                        fontWeight: FontWeight.bold)),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  height: 1.0,
-                  color: Colors.white,
-                ),
-              ],
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    height: 1.0,
+                    color: Colors.white,
+                  ),
+                  const Text('Next Day',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Spartan MB',
+                          fontWeight: FontWeight.bold)),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    height: 1.0,
+                    color: Colors.white,
+                  ),
+                ],
             ),
           ) : const SizedBox()
         ],
