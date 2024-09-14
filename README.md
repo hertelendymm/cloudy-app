@@ -17,8 +17,8 @@ Cloudy is a minimalist weather app designed to keep you informed and prepared. W
 
 ## Data Source:
 - Weather data provided by the [OpenWeatherMap](https://openweathermap.org/api)
-    - Current Weather: [Current API](https://openweathermap.org/current)
-    - 5 day weather forecast: [Forecast5 API](https://openweathermap.org/forecast5)
+  - Current Weather: [Current API](https://openweathermap.org/current)
+  - 5 day weather forecast: [Forecast5 API](https://openweathermap.org/forecast5)
 
 ## Icons:
 - Icons: [FontAwesome](https://fontawesome.com/icons)
