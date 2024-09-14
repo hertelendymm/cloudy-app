@@ -51,7 +51,6 @@ class _ForecastPageState extends State<ForecastPage> {
           hour = hour % 12;
           hour = hour == 0 ? 12 : hour;
           String formattedTime = '${hour.toString().padLeft(2, '0')} $period';
-          print(formattedTime);
           ForecastModel forecastModel = ForecastModel(
             weatherIcon: WeatherHelper().getWeatherIcon(id),
             mainText: element['weather'][0]['main'],
@@ -61,7 +60,6 @@ class _ForecastPageState extends State<ForecastPage> {
             tempText: '${(element['main']['temp']).round()}°C',
           );
           _hourlyBank.add(forecastModel);
-          print(forecastModel.timeText);
         }
         print('_hourlyBank: ${_hourlyBank.length}\n${_hourlyBank[0]}');
     });
@@ -150,15 +148,17 @@ class _ForecastPageState extends State<ForecastPage> {
                   isNightMode: true,
                   isActive: isHourlyPage,
                   text: '48 hour'
+                  // text: '48 hourly'
                 ),
               ),
-              SizedBox(width: 20.0),
+              const SizedBox(width: 20.0),
               Flexible(
                 child: ButtonRounded(
                     function: ()=> _switchView(),
                     isNightMode: true,
                     isActive: !isHourlyPage,
-                    text: '7 day'
+                    text: '5 day'
+                    // text: 'Daily'
                 ),
               ),
             ],
