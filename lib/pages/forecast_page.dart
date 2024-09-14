@@ -263,7 +263,6 @@ class _ForecastPageState extends State<ForecastPage> {
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
-                            // fontSize: 20.0,
                             fontFamily: 'Spartan MB',
                             fontWeight: FontWeight.bold,
                           ))),
