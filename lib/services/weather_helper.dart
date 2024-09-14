@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 const apiKey = '4ef2575bccd3ceab784dcd713ba20758';
 // const apiKey = 'API_KEY';
 const openWeatherMapCURRENT = 'https://api.openweathermap.org/data/2.5/weather';
-const openWeatherMapONECALL = 'https://api.openweathermap.org/data/2.5/onecall';
+const openWeatherMap5dPer3h = 'https://api.openweathermap.org/data/2.5/forecast';
 
 class WeatherHelper {
   Future<dynamic> getCityWeather(String cityName) async {
@@ -38,7 +38,7 @@ class WeatherHelper {
   }) async {
     /// Exclude: (String) --> current/minutely/hourly/daily/alerts (write one of these)
     NetworkHelper networkHelper = NetworkHelper(
-        '$openWeatherMapONECALL?lat=$lat&lon=$lon&$exclude=hourly}&appid=$apiKey&units=metric');
+        '$openWeatherMap5dPer3h?lat=$lat&lon=$lon&appid=$apiKey&units=metric');
 
     var weatherData = await networkHelper.getData();
     print('getWeatherForecast: \n${weatherData.toString()}');

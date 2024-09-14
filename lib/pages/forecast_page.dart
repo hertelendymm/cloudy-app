@@ -37,47 +37,78 @@ class _ForecastPageState extends State<ForecastPage> {
       lat: widget.lat,
       lon: widget.lon,
     );
+    print('weatherData: $weatherData');
 
     setState(() {
-      /// Hourly data
-      hourlyData = weatherData['hourly'];
-      List jsonListHourly = hourlyData;
-      for (var element in jsonListHourly) {
-        int id = element['weather'][0]['id'];
-        DateTime date = DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
-        // var format = DateFormat("j");
-        // var dateString = format.format(date);
-        ForecastModel forecastModel = ForecastModel(
-          weatherIcon: WeatherHelper().getWeatherIcon(id),
-          mainText: element['weather'][0]['main'],
-          descriptionText: element['weather'][0]['description'],
-          timeText: '$date',
-          // timeText: dateString,
-          tempText: '${(element['temp']).round()}°C',
-        );
-        _hourlyBank.add(forecastModel);
-      }
-
-      /// Daily data
-      hourlyData = weatherData['daily'];
-      List jsonListDaily = hourlyData;
-      for (var element in jsonListDaily) {
-        int id = element['weather'][0]['id'];
-        DateTime date = DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
-        // var format = DateFormat("EEEE");
-        // var dateString = format.format(date);
-        // print('dateString: $dateString');
-        ForecastModel forecastModel = ForecastModel(
-          weatherIcon: WeatherHelper().getWeatherIcon(id),
-          mainText: element['weather'][0]['main'],
-          descriptionText: element['weather'][0]['description'],
-          timeText: '$date',
-          // timeText: dateString,
-          tempText: '${(element['temp']['day']).round()}°C',
-        );
-        _dailyBank.add(forecastModel);
-      }
+        /// 3 Hourly data
+        hourlyData = weatherData['list'];
+        List jsonListHourly = hourlyData;
+        for (var element in jsonListHourly) {
+          int id = element['weather'][0]['id'];
+          DateTime date = DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
+          int hour = date.hour;
+          String period = hour >= 12 ? 'PM' : 'AM';
+          hour = hour % 12;
+          hour = hour == 0 ? 12 : hour;
+          String formattedTime = '${hour.toString().padLeft(2, '0')} $period';
+          print(formattedTime);
+          ForecastModel forecastModel = ForecastModel(
+            weatherIcon: WeatherHelper().getWeatherIcon(id),
+            mainText: element['weather'][0]['main'],
+            descriptionText: element['weather'][0]['description'],
+            timeText: formattedTime,
+            // timeText: dateString,
+            tempText: '${(element['main']['temp']).round()}°C',
+          );
+          _hourlyBank.add(forecastModel);
+          print(forecastModel.timeText);
+        }
+        print('_hourlyBank: ${_hourlyBank.length}\n${_hourlyBank[0]}');
     });
+
+    // setState(() {
+    //   /// Hourly data
+    //   hourlyData = weatherData['hourly'];
+    //   List jsonListHourly = hourlyData;
+    //   for (var element in jsonListHourly) {
+    //     int id = element['weather'][0]['id'];
+    //     DateTime date = DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
+    //     // var format = DateFormat("j");
+    //     // var dateString = format.format(date);
+    //     ForecastModel forecastModel = ForecastModel(
+    //       weatherIcon: WeatherHelper().getWeatherIcon(id),
+    //       mainText: element['weather'][0]['main'],
+    //       descriptionText: element['weather'][0]['description'],
+    //       timeText: '$date',
+    //       // timeText: dateString,
+    //       tempText: '${(element['temp']).round()}°C',
+    //     );
+    //     _hourlyBank.add(forecastModel);
+    //   }
+    //   print('_hourlyBank: ${_hourlyBank.length}\n${_hourlyBank[0]}');
+
+      // /// Daily data
+      // _dailyBank = weatherData['daily'];
+      // List jsonListDaily = hourlyData;
+      // for (var element in jsonListDaily) {
+      //   int id = element['weather'][0]['id'];
+      //   DateTime date = DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
+      //   // var format = DateFormat("EEEE");
+      //   // var dateString = format.format(date);
+      //   // print('dateString: $dateString');
+      //   ForecastModel forecastModel = ForecastModel(
+      //     weatherIcon: WeatherHelper().getWeatherIcon(id),
+      //     mainText: element['weather'][0]['main'],
+      //     descriptionText: element['weather'][0]['description'],
+      //     timeText: '$date',
+      //     // timeText: dateString,
+      //     tempText: '${(element['temp']['day']).round()}°C',
+      //   );
+      //   _dailyBank.add(forecastModel);
+      // }
+    // });
+    // print('_dailyBank: ${_dailyBank.length}\n${_dailyBank[0]}');
+
   }
 
   _switchView(){
@@ -108,26 +139,30 @@ class _ForecastPageState extends State<ForecastPage> {
         )
       ),
       body: SafeArea(child: Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(
-              child: ButtonRounded(
-                function: ()=> _switchView(),
-                isNightMode: true,
-                isActive: isHourlyPage,
-                text: '48 hour'
-              ),
-            ),
-            Flexible(
-              child: ButtonRounded(
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                child: ButtonRounded(
                   function: ()=> _switchView(),
                   isNightMode: true,
-                  isActive: !isHourlyPage,
-                  text: '7 day'
+                  isActive: isHourlyPage,
+                  text: '48 hour'
+                ),
               ),
-            ),
-          ],
+              SizedBox(width: 20.0),
+              Flexible(
+                child: ButtonRounded(
+                    function: ()=> _switchView(),
+                    isNightMode: true,
+                    isActive: !isHourlyPage,
+                    text: '7 day'
+                ),
+              ),
+            ],
+          ),
         ),
           hourlyData == null ? loadingScreen() : showForecastContent(),
       ],
@@ -142,31 +177,28 @@ class _ForecastPageState extends State<ForecastPage> {
   }
 
   Widget showForecastContent() {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      // backgroundColor: widget.isNight ? Colors.black : Colors.white,
-      body: isHourlyPage
-          ? Expanded(
-            child: ListView.builder(
+    return Flexible(
+        child: ListView.builder(
                 padding: const EdgeInsets.all(8),
-                itemCount: _hourlyBank.length,
+                itemCount: 16,
+                // itemCount: _hourlyBank.length,
                 itemBuilder: (BuildContext context, int index) {
                   return weatherHourlyListTile(
                     forecast: _hourlyBank[index]
                   );
-                })
-          )
-          : Expanded(
-            child: ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: _dailyBank.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return weatherDailyListTile(
-                    forecast: _dailyBank[index],
-                  );
-                })
-          ),
-    );
+                }),
+      )
+          // : Expanded(
+          //   child: ListView.builder(
+          //       padding: const EdgeInsets.all(8),
+          //       itemCount: _dailyBank.length,
+          //       itemBuilder: (BuildContext context, int index) {
+          //         return weatherDailyListTile(
+          //           forecast: _dailyBank[index],
+          //         );
+          //       })
+          // ),
+    ;
   }
 
   Widget weatherHourlyListTile({
@@ -228,9 +260,8 @@ class _ForecastPageState extends State<ForecastPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                       child: Text(forecast.tempText,
-                          style: TextStyle(
-                            color: Theme.of(context).iconTheme.color,
-                            // widget.isNight ? Colors.white : Colors.black,
+                          style: const TextStyle(
+                            color: Colors.white,
                             fontSize: 18.0,
                             // fontSize: 20.0,
                             fontFamily: 'Spartan MB',
@@ -240,7 +271,7 @@ class _ForecastPageState extends State<ForecastPage> {
               ),
             ],
           ),
-          forecast.timeText == '12 AM'
+          (forecast.timeText == '10 PM' || forecast.timeText == '11 PM' ||forecast.timeText ==  '12 AM')
               ? Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Row(
@@ -249,8 +280,7 @@ class _ForecastPageState extends State<ForecastPage> {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.25,
                   height: 1.0,
-                  color: Theme.of(context).iconTheme.color,
-                  // color: widget.isNight ? Colors.white : Colors.black,
+                  color: Colors.white,
                 ),
                 const Text('Next Day',
                     style: TextStyle(
