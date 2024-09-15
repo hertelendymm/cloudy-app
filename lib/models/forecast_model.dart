@@ -1,12 +1,11 @@
 import 'package:cloudy_app/models/weathericon_model.dart';
-import 'package:flutter/material.dart';
 
 class ForecastModel {
   final WeatherIcon weatherIcon;
   final String mainText;
   final String descriptionText;
   final String timeText;
-  final DateTime dateTime;
+  final List<int> dateTime; /// [year, month, day]
   final String tempText;
 
   ForecastModel({
