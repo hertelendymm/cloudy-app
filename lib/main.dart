@@ -52,35 +52,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    print('Init State -------');
-    // _isLoading = true;
     getLocationData();
-    // if (_isCurrentLocation) {
-    // getCurrentLocationData();
-    // }
-    // if(weatherData != null) {
-    //   loadWeatherData();
-    // }else{
-    //   print("WEATHER DATA IS NULL HERE -------------------");
-    // }
   }
 
   void getLocationData() async {
     if (otherLocation != '') {
-      print('Other location: $otherLocation');
-      /// TODO: Load other location's data
+      /// Load other location's data
       weatherData = await WeatherHelper().getCityWeather(otherLocation);
     } else {
       print('Current location');
       /// Load currents location's data
       weatherData = await WeatherHelper().getLocationWeather();
     }
-
-    print("$weatherData=====================");
     await loadWeatherData();
-    // setState(() {
-    //   _isLoading = false;
-    // });
   }
 
   Future<void> loadWeatherData() async {
@@ -89,8 +73,6 @@ class _MyHomePageState extends State<MyHomePage> {
         forecastModel = WeatherModel.fromJson(weatherData);
         weatherIcon = WeatherHelper()
             .getWeatherIcon(int.parse(forecastModel.condition));
-        print(forecastModel.toString());
-        print("weatherIcon: ${weatherIcon.toString()}");
       });
     } else {
       print("WEATHER DATA IS NULL HERE -------------------");

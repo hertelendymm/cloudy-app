@@ -66,19 +66,9 @@ class _ForecastPageState extends State<ForecastPage> {
       print('_hourlyBank: ${_hourlyBank.length}\n${_hourlyBank[0]}');
 
       /// Daily data
-      // _dailyBank.clear();
-      // // Group hourly forecasts by day
-      // List<ForecastModel> _dailyData = [];
-      // for (ForecastModel item in _hourlyBank){
-      //
-      // }
-
       _dailyBank.clear();
-
-      // Group hourly forecasts by day using fold
-      Map<DateTime, List<ForecastModel>> groupedForecasts = _hourlyBank.fold<Map<DateTime, List<ForecastModel>>>(
-        {},
-            (map, forecast) {
+      /// Group hourly forecasts by day using fold
+      Map<DateTime, List<ForecastModel>> groupedForecasts = _hourlyBank.fold<Map<DateTime, List<ForecastModel>>>({}, (map, forecast) {
           final date = DateTime(forecast.dateTime[0], forecast.dateTime[1], forecast.dateTime[2]);
           if (map.containsKey(date)) {
             map[date]!.add(forecast);
@@ -89,7 +79,7 @@ class _ForecastPageState extends State<ForecastPage> {
         },
       );
 
-      // Calculate average temperature and create daily forecasts
+      /// Calculate average temperature and create daily forecasts
       groupedForecasts.forEach((date, hourlyForecasts) {
         double averageTemp = hourlyForecasts.map((forecast) => double.parse(forecast.tempText.substring(0, forecast.tempText.length - 2))).reduce((sum, temp) => sum + temp) / hourlyForecasts.length;
         String dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][date.toLocal().weekday-1];
@@ -99,57 +89,12 @@ class _ForecastPageState extends State<ForecastPage> {
           mainText: mostFrequentForecast.mainText,
           descriptionText: mostFrequentForecast.descriptionText,
           timeText: dayOfWeek, // Set a consistent timeText for daily forecasts
-          // timeText: "Daily Average", // Set a consistent timeText for daily forecasts
           dateTime: [date.toLocal().year, date.toLocal().month, date.toLocal().day], // Convert DateTime to [year, month, day]
           tempText: "${averageTemp.round()}°C",
         ));
       });
 
     });
-
-    // setState(() {
-    //   /// Hourly data
-    //   hourlyData = weatherData['hourly'];
-    //   List jsonListHourly = hourlyData;
-    //   for (var element in jsonListHourly) {
-    //     int id = element['weather'][0]['id'];
-    //     DateTime date = DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
-    //     // var format = DateFormat("j");
-    //     // var dateString = format.format(date);
-    //     ForecastModel forecastModel = ForecastModel(
-    //       weatherIcon: WeatherHelper().getWeatherIcon(id),
-    //       mainText: element['weather'][0]['main'],
-    //       descriptionText: element['weather'][0]['description'],
-    //       timeText: '$date',
-    //       // timeText: dateString,
-    //       tempText: '${(element['temp']).round()}°C',
-    //     );
-    //     _hourlyBank.add(forecastModel);
-    //   }
-    //   print('_hourlyBank: ${_hourlyBank.length}\n${_hourlyBank[0]}');
-
-      // /// Daily data
-      // _dailyBank = weatherData['daily'];
-      // List jsonListDaily = hourlyData;
-      // for (var element in jsonListDaily) {
-      //   int id = element['weather'][0]['id'];
-      //   DateTime date = DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
-      //   // var format = DateFormat("EEEE");
-      //   // var dateString = format.format(date);
-      //   // print('dateString: $dateString');
-      //   ForecastModel forecastModel = ForecastModel(
-      //     weatherIcon: WeatherHelper().getWeatherIcon(id),
-      //     mainText: element['weather'][0]['main'],
-      //     descriptionText: element['weather'][0]['description'],
-      //     timeText: '$date',
-      //     // timeText: dateString,
-      //     tempText: '${(element['temp']['day']).round()}°C',
-      //   );
-      //   _dailyBank.add(forecastModel);
-      // }
-    // });
-    // print('_dailyBank: ${_dailyBank.length}\n${_dailyBank[0]}');
-
   }
 
   ForecastModel findMostFrequentForecast(List<ForecastModel> forecasts) {
@@ -261,16 +206,6 @@ class _ForecastPageState extends State<ForecastPage> {
             );
           })
       );
-          // : Expanded(
-          //   child: ListView.builder(
-          //       padding: const EdgeInsets.all(8),
-          //       itemCount: _dailyBank.length,
-          //       itemBuilder: (BuildContext context, int index) {
-          //         return weatherDailyListTile(
-          //           forecast: _dailyBank[index],
-          //         );
-          //       })
-          // ),
   }
 
   Widget weatherHourlyListTile({
