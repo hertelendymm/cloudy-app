@@ -57,9 +57,11 @@ class _ForecastPageState extends State<ForecastPage> {
             descriptionText: element['weather'][0]['description'],
             timeText: formattedTime,
             // timeText: dateString,
+            dateTime: date,
             tempText: '${(element['main']['temp']).round()}°C',
           );
           _hourlyBank.add(forecastModel);
+          print(forecastModel.toString());
         }
         print('_hourlyBank: ${_hourlyBank.length}\n${_hourlyBank[0]}');
     });
