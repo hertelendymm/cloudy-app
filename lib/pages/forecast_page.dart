@@ -154,8 +154,9 @@ class _ForecastPageState extends State<ForecastPage> {
               Flexible(
                 child: ButtonRounded(
                   function: ()=> _switchView(),
-                  isNightMode: true,
-                  isActive: isHourlyPage,
+                  // isNightMode: true,
+                  // isActive: isHourlyPage,
+                    backgroundColor: Colors.white.withOpacity(0.2),
                   text: '48 hour'
                   // text: '48 hourly'
                 ),
@@ -164,8 +165,9 @@ class _ForecastPageState extends State<ForecastPage> {
               Flexible(
                 child: ButtonRounded(
                     function: ()=> _switchView(),
-                    isNightMode: true,
-                    isActive: !isHourlyPage,
+                    // isNightMode: true,
+                    // isActive: !isHourlyPage,
+                    backgroundColor: Colors.white.withOpacity(0.2),
                     text: '5 day'
                     // text: 'Daily'
                 ),

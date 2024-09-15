@@ -44,7 +44,8 @@ class _SearchPageState extends State<SearchPage> {
                         })),
                 ButtonRounded(
                     text: 'Get Weather',
-                    isNightMode: true,
+                    backgroundColor: Colors.white.withOpacity(0.2),
+                    // isNightMode: true,
                     function: () {
                       print('Close Serach Page');
                       Navigator.pop(context, cityName);

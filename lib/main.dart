@@ -187,25 +187,45 @@ class _MyHomePageState extends State<MyHomePage> {
               Icon(
                 weatherIcon.iconData,
                 color: weatherIcon.color,
-                size: MediaQuery.of(context).size.width / 2.5,
+                size: 140.0,
+                // size: MediaQuery.of(context).size.width / 3,
               ),
               _weatherDescription(),
-              ButtonRounded(
-                text: 'Forecast',
-                isNightMode: true,
-                function: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ForecastPage(
-                              lat: forecastModel.lat,
-                              lon: forecastModel.lon,
-                              // isNight: isNight,
-                            ))
-                  );
-                },
-              )
+              Column(
+                children: [
+                  ButtonRounded(
+                    text: 'Forecast',
+                    // isNightMode: true,
+                    backgroundColor: Colors.white.withOpacity(0.2),
+                    function: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ForecastPage(
+                                  lat: forecastModel.lat,
+                                  lon: forecastModel.lon,
+                                  // isNight: isNight,
+                                ))
+                      );
+                    },
+                  ),
+                  ButtonRounded(
+                    text: 'Refresh',
+                    // isNightMode: true,
+                    // isActive: true,
+                    function: () {
+                      /// Refresh Button
+                      setState(() {
+                        otherLocation = '';
+                        _isLoading = true;
+                      });
+                      getLocationData();
+                    },
+                  ),
+                ],
+              ),
+
             ],
           ),
         ),
