@@ -13,7 +13,7 @@ Cloudy is a minimalist weather app designed to keep you informed and prepared. W
 - Personalized Forecasts: Get weather updates tailored to your specific location.
 - Dark Mode: Choose the theme that best suits your preferences and viewing conditions.
 - City Search: Explore weather conditions in cities around the world.
-- Multi-Day Forecasts: Plan ahead with current, 48-hour, and 7-day forecasts.
+- Multi-Day Forecasts: Plan ahead with current, 48-hour, and 5-day forecasts.
 
 ## Data Source:
 - Weather data provided by the [OpenWeatherMap](https://openweathermap.org/api)

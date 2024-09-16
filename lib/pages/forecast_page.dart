@@ -137,7 +137,6 @@ class _ForecastPageState extends State<ForecastPage> {
     return mostFrequentForecast;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,30 +158,30 @@ class _ForecastPageState extends State<ForecastPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Flexible(
-                      child: ButtonRounded(
-                          function: () {
-                            setState(() {
-                              isHourlyPage = true;
-                            });
-                          },
-                          backgroundColor: Colors.white.withOpacity(0.2),
-                          text: '48 hour')),
-                  const SizedBox(width: 20.0),
-                  Flexible(
-                      child: ButtonRounded(
-                          function: () {
-                            setState(() {
-                              isHourlyPage = false;
-                            });
-                          },
-                          backgroundColor: Colors.white.withOpacity(0.2),
-                          text: '5 day')),
+              Flexible(
+                  child: ButtonRounded(
+                      function: () {
+                        setState(() {
+                          isHourlyPage = true;
+                        });
+                      },
+                      backgroundColor: Colors.white.withOpacity(0.2),
+                      text: '48 hour')),
+              const SizedBox(width: 20.0),
+              Flexible(
+                  child: ButtonRounded(
+                      function: () {
+                        setState(() {
+                          isHourlyPage = false;
+                        });
+                      },
+                      backgroundColor: Colors.white.withOpacity(0.2),
+                      text: '5 day')),
                 ],
               ),
             ),
             hourlyData == null ? loadingScreen() : showForecastContent(),
-          ],
+        ],
         ),
       ),
     );
