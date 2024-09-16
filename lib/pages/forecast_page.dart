@@ -137,13 +137,6 @@ class _ForecastPageState extends State<ForecastPage> {
     return mostFrequentForecast;
   }
 
-  _switchView() {
-    setState(() {
-      print('click');
-      isHourlyPage = !isHourlyPage;
-      print('isHourlyPage: $isHourlyPage');
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,13 +161,21 @@ class _ForecastPageState extends State<ForecastPage> {
                 children: [
                   Flexible(
                       child: ButtonRounded(
-                          function: () => _switchView(),
+                          function: () {
+                            setState(() {
+                              isHourlyPage = true;
+                            });
+                          },
                           backgroundColor: Colors.white.withOpacity(0.2),
                           text: '48 hour')),
                   const SizedBox(width: 20.0),
                   Flexible(
                       child: ButtonRounded(
-                          function: () => _switchView(),
+                          function: () {
+                            setState(() {
+                              isHourlyPage = false;
+                            });
+                          },
                           backgroundColor: Colors.white.withOpacity(0.2),
                           text: '5 day')),
                 ],
