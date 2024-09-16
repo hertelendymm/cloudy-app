@@ -33,19 +33,18 @@ class _ForecastPageState extends State<ForecastPage> {
 
   void getDataForecast() async {
     weatherData = await WeatherHelper().getWeatherForecast48h7d(
-      exclude: 'hourly,daily',
-      lat: widget.lat,
-      lon: widget.lon,
-    );
+        exclude: 'hourly,daily', lat: widget.lat, lon: widget.lon);
     print('weatherData: $weatherData');
 
     setState(() {
       /// 3 Hourly data
+      _hourlyBank.clear();
       hourlyData = weatherData['list'];
       List jsonListHourly = hourlyData;
       for (var element in jsonListHourly) {
         int id = element['weather'][0]['id'];
-        DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
+        DateTime dateTime =
+            DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
         int hour = dateTime.hour;
         List<int> date = [dateTime.year, dateTime.month, dateTime.day];
         String period = hour >= 12 ? 'PM' : 'AM';
@@ -67,9 +66,14 @@ class _ForecastPageState extends State<ForecastPage> {
 
       /// Daily data
       _dailyBank.clear();
+
       /// Group hourly forecasts by day using fold
-      Map<DateTime, List<ForecastModel>> groupedForecasts = _hourlyBank.fold<Map<DateTime, List<ForecastModel>>>({}, (map, forecast) {
-          final date = DateTime(forecast.dateTime[0], forecast.dateTime[1], forecast.dateTime[2]);
+      Map<DateTime, List<ForecastModel>> groupedForecasts =
+          _hourlyBank.fold<Map<DateTime, List<ForecastModel>>>(
+        {},
+        (map, forecast) {
+          final date = DateTime(
+              forecast.dateTime[0], forecast.dateTime[1], forecast.dateTime[2]);
           if (map.containsKey(date)) {
             map[date]!.add(forecast);
           } else {
@@ -81,19 +85,37 @@ class _ForecastPageState extends State<ForecastPage> {
 
       /// Calculate average temperature and create daily forecasts
       groupedForecasts.forEach((date, hourlyForecasts) {
-        double averageTemp = hourlyForecasts.map((forecast) => double.parse(forecast.tempText.substring(0, forecast.tempText.length - 2))).reduce((sum, temp) => sum + temp) / hourlyForecasts.length;
-        String dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][date.toLocal().weekday-1];
-        ForecastModel mostFrequentForecast = findMostFrequentForecast(hourlyForecasts);
+        double averageTemp = hourlyForecasts
+                .map((forecast) => double.parse(forecast.tempText
+                    .substring(0, forecast.tempText.length - 2)))
+                .reduce((sum, temp) => sum + temp) /
+            hourlyForecasts.length;
+        String dayOfWeek = [
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+          'Sunday'
+        ][date.toLocal().weekday - 1];
+        ForecastModel mostFrequentForecast =
+            findMostFrequentForecast(hourlyForecasts);
         _dailyBank.add(ForecastModel(
           weatherIcon: mostFrequentForecast.weatherIcon,
           mainText: mostFrequentForecast.mainText,
           descriptionText: mostFrequentForecast.descriptionText,
-          timeText: dayOfWeek, // Set a consistent timeText for daily forecasts
-          dateTime: [date.toLocal().year, date.toLocal().month, date.toLocal().day], // Convert DateTime to [year, month, day]
+          timeText: dayOfWeek,
+          // Set a consistent timeText for daily forecasts
+          dateTime: [
+            date.toLocal().year,
+            date.toLocal().month,
+            date.toLocal().day
+          ],
+          // Convert DateTime to [year, month, day]
           tempText: "${averageTemp.round()}°C",
         ));
       });
-
     });
   }
 
@@ -115,8 +137,7 @@ class _ForecastPageState extends State<ForecastPage> {
     return mostFrequentForecast;
   }
 
-
-  _switchView(){
+  _switchView() {
     setState(() {
       print('click');
       isHourlyPage = !isHourlyPage;
@@ -129,90 +150,67 @@ class _ForecastPageState extends State<ForecastPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.black,
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: ()=> Navigator.pop(context),
-          icon: const Icon(
-            FontAwesomeIcons.angleLeft,
-            color: Colors.white,
-            size: 40.0
-          )
+          elevation: 0.0,
+          backgroundColor: Colors.black,
+          centerTitle: true,
+          leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(FontAwesomeIcons.angleLeft,
+                  color: Colors.white, size: 40.0)),
+          title: const Text('Forecast', style: kCityTitleTextStyleNight)),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Flexible(
+                      child: ButtonRounded(
+                          function: () => _switchView(),
+                          backgroundColor: Colors.white.withOpacity(0.2),
+                          text: '48 hour')),
+                  const SizedBox(width: 20.0),
+                  Flexible(
+                      child: ButtonRounded(
+                          function: () => _switchView(),
+                          backgroundColor: Colors.white.withOpacity(0.2),
+                          text: '5 day')),
+                ],
+              ),
+            ),
+            hourlyData == null ? loadingScreen() : showForecastContent(),
+          ],
         ),
-        title: const Text(
-            'Forecast',
-            style: kCityTitleTextStyleNight
-        )
       ),
-      body: SafeArea(child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Flexible(
-                child: ButtonRounded(
-                  function: ()=> _switchView(),
-                  // isNightMode: true,
-                  // isActive: isHourlyPage,
-                    backgroundColor: Colors.white.withOpacity(0.2),
-                  text: '48 hour'
-                  // text: '48 hourly'
-                ),
-              ),
-              const SizedBox(width: 20.0),
-              Flexible(
-                child: ButtonRounded(
-                    function: ()=> _switchView(),
-                    // isNightMode: true,
-                    // isActive: !isHourlyPage,
-                    backgroundColor: Colors.white.withOpacity(0.2),
-                    text: '5 day'
-                    // text: 'Daily'
-                ),
-              ),
-            ],
-          ),
-        ),
-          hourlyData == null ? loadingScreen() : showForecastContent(),
-      ],
-      ),),
     );
   }
 
   Widget loadingScreen() {
     return const Center(
-        child: CircularProgressIndicator(color: Colors.white),
-      );
+      child: CircularProgressIndicator(color: Colors.white),
+    );
   }
 
   Widget showForecastContent() {
     return Flexible(
-        child: isHourlyPage ?
-        ListView.builder(
+        child: isHourlyPage
+            ? ListView.builder(
                 padding: const EdgeInsets.all(8),
                 itemCount: 16,
-                // itemCount: _hourlyBank.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return weatherHourlyListTile(
-                    forecast: _hourlyBank[index]
-                  );
-                }):
-        ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: _dailyBank.length,
-          itemBuilder: (BuildContext context, int index) {
-            return weatherDailyListTile(
-              forecast: _dailyBank[index],
-            );
-          })
-      );
+                  return weatherHourlyListTile(forecast: _hourlyBank[index]);
+                })
+            : ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: _dailyBank.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return weatherDailyListTile(forecast: _dailyBank[index]);
+                }));
   }
 
-  Widget weatherHourlyListTile({
-    required ForecastModel forecast
-  }) {
+  Widget weatherHourlyListTile({required ForecastModel forecast}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -248,18 +246,12 @@ class _ForecastPageState extends State<ForecastPage> {
                   children: [
                     Text(forecast.mainText,
                         style: const TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Spartan MB',
-                          fontSize: 14.0,
-                        )),
+                            color: Colors.white,
+                            fontFamily: 'Spartan MB',
+                            fontSize: 14.0)),
                     Text(forecast.descriptionText,
                         style: const TextStyle(
-                          color: Colors.white,
-                          letterSpacing: 0.3,
-                          // fontFamily: 'Spartan MB',
-                          // fontSize: 14.0,
-                          // fontWeight: FontWeight.w300,
-                        )),
+                            color: Colors.white, letterSpacing: 0.3)),
                   ],
                 ),
               ),
@@ -279,30 +271,33 @@ class _ForecastPageState extends State<ForecastPage> {
               ),
             ],
           ),
-          (forecast.timeText == '10 PM' || forecast.timeText == '11 PM' ||forecast.timeText ==  '12 AM')
+          (forecast.timeText == '10 PM' ||
+                  forecast.timeText == '11 PM' ||
+                  forecast.timeText == '12 AM')
               ? Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    height: 1.0,
-                    color: Colors.white,
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: 1.0,
+                        color: Colors.white,
+                      ),
+                      const Text('Next Day',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Spartan MB',
+                              fontWeight: FontWeight.bold)),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: 1.0,
+                        color: Colors.white,
+                      ),
+                    ],
                   ),
-                  const Text('Next Day',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Spartan MB',
-                          fontWeight: FontWeight.bold)),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    height: 1.0,
-                    color: Colors.white,
-                  ),
-                ],
-            ),
-          ) : const SizedBox()
+                )
+              : const SizedBox()
         ],
       ),
     );
