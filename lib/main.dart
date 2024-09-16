@@ -117,30 +117,42 @@ class _MyHomePageState extends State<MyHomePage> {
             size: 140.0,
           ),
           _weatherDescription(),
-          Column(
+          Row(
             children: [
-              ButtonRounded(
-                text: 'Forecast',
-                backgroundColor: Colors.white.withOpacity(0.2),
-                function: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ForecastPage(
-                              lat: forecastModel.lat,
-                              lon: forecastModel.lon,
-                            ))),
+              Flexible(
+                child: ButtonRounded(
+                  text: 'Forecast',
+                  backgroundColor: Colors.white.withOpacity(0.2),
+                  function: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ForecastPage(
+                                lat: forecastModel.lat,
+                                lon: forecastModel.lon,
+                              ))),
+                ),
               ),
-              const SizedBox(height: 12.0),
-              ButtonRounded(
-                  text: 'Refresh',
-                  function: () {
-                    /// Refresh Button
-                    setState(() {
-                      otherLocation = '';
-                      _isLoading = true;
-                    });
-                    getLocationData();
-                  })
+              const SizedBox(width: 24.0),
+              // const SizedBox(height: 12.0),
+              Flexible(
+                child: ButtonRounded(
+                    text: 'Search City',
+                    backgroundColor: Colors.white.withOpacity(0.2),
+                    function: () async {
+                      var typedCityName = await Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return const SearchPage();
+                          }));
+                      if (typedCityName != null) {
+                        print('typedCityName: $typedCityName');
+                        setState(() {
+                          _isLoading = true;
+                          otherLocation = typedCityName;
+                        });
+                        getLocationData();
+                      }
+                    }),
+              )
             ],
           ),
           const SizedBox(height: 0.0),
@@ -166,24 +178,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontSize: 20.0, color: Colors.white)),
         GestureDetector(
             onTap: () async {
-              var typedCityName = await Navigator.push(context,
-                  MaterialPageRoute(builder: (context) {
-                return const SearchPage();
-              }));
-              if (typedCityName != null) {
-                print('typedCityName: $typedCityName');
-                setState(() {
-                  _isLoading = true;
-                  otherLocation = typedCityName;
-                });
-                getLocationData();
-              }
+              /// Refresh Button
+              setState(() {
+                otherLocation = '';
+                _isLoading = true;
+              });
+              getLocationData();
             },
             child: Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 24.0, horizontal: 14.0),
               child: const Icon(
-                FontAwesomeIcons.magnifyingGlassLocation,
+                FontAwesomeIcons.rotate,
                 color: Colors.white,
               ),
             )),
