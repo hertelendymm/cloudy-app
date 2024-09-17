@@ -2,7 +2,6 @@ import 'package:cloudy_app/constats.dart';
 import 'package:cloudy_app/widgets/appbar_secondary.dart';
 import 'package:cloudy_app/widgets/button_rounded.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -17,17 +16,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0.0,
-      //   centerTitle: true,
-      //   backgroundColor: Colors.black,
-      //   leading: IconButton(
-      //     onPressed: ()=> Navigator.pop(context),
-      //     icon: const Icon(FontAwesomeIcons.angleLeft,
-      //         color: Colors.white, size: 40.0),
-      //   ),
-      //   title: const Text('Search', style: kCityTitleTextStyleNight),
-      // ),
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(

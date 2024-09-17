@@ -1,4 +1,3 @@
-import 'package:cloudy_app/constats.dart';
 import 'package:flutter/material.dart';
 
 class LoadingPage extends StatelessWidget {

@@ -97,13 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(child: _isLoading ? const LoadingPage() : _currentLocation()),
-      // body: SafeArea(child: _isLoading ? _loadingPage() : _currentLocation()),
     );
   }
-
-  // Widget _loadingPage() {
-  //   return const Center(child: CircularProgressIndicator(color: Colors.white));
-  // }
 
   Widget _currentLocation() {
     return Padding(

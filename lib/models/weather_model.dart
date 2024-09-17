@@ -1,4 +1,3 @@
-import 'package:cloudy_app/models/weathericon_model.dart';
 
 class WeatherModel {
   final String lon;
@@ -6,8 +5,6 @@ class WeatherModel {
   final String temperature;
   final String condition;
   final String description;
-  // final WeatherIcon weatherIcon;
-  // final String weatherMessage;
   final String cityName;
 
   WeatherModel({
@@ -16,8 +13,6 @@ class WeatherModel {
     required this.temperature,
     required this.condition,
     required this.description,
-    // required this.weatherIcon,
-    // required this.weatherMessage,
     required this.cityName,
   });
 
