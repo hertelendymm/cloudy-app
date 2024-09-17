@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 
 class ListTileWeatherHourly extends StatelessWidget {
   const ListTileWeatherHourly(
-      {super.key, required this.forecast, required this.index});
+      {super.key,
+      required this.forecast,
+      required this.index,
+      required this.firstIndex});
 
   final ForecastModel forecast;
   final int index;
+  final int firstIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +19,12 @@ class ListTileWeatherHourly extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          index == 6
+          index == firstIndex
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(0, 60, 0, 20.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Text("Daily forecast",
                       Text("48 HOUR FORECAST",
                           style: TextStyle(
                             color: Colors.grey.shade400,

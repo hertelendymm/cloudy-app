@@ -18,12 +18,8 @@ class ForecastPage extends StatefulWidget {
 
 class _ForecastPageState extends State<ForecastPage> {
   var weatherData;
-  var weatherDataLoading;
-  bool isHourlyPage = true;
   var hourlyData;
   List<ForecastModel> _hourlyBank = [];
-
-  // List<ForecastModel> _dailyBank = [];
   List<ForecastModel> _forecastBank = [];
   bool _isLoading = true;
 
@@ -41,7 +37,6 @@ class _ForecastPageState extends State<ForecastPage> {
 
     weatherData = await WeatherHelper().getWeatherForecast48h7d(
         exclude: 'hourly,daily', lat: widget.lat, lon: widget.lon);
-    print('weatherData: $weatherData');
 
     /// 3 Hourly data
     hourlyData = weatherData['list'];
@@ -66,9 +61,7 @@ class _ForecastPageState extends State<ForecastPage> {
         tempText: '${(element['main']['temp']).round()}°C',
       );
       _hourlyBank.add(forecastModel);
-      // print(forecastModel.toString());
     }
-    print('_hourlyBank: ${_hourlyBank.length}\n${_hourlyBank[0]}');
 
     /// Group hourly forecasts by day using fold
     Map<DateTime, List<ForecastModel>> groupedForecasts =
@@ -110,24 +103,25 @@ class _ForecastPageState extends State<ForecastPage> {
         mainText: mostFrequentForecast.mainText,
         descriptionText: mostFrequentForecast.descriptionText,
         timeText: dayOfWeek,
-        // Set a consistent timeText for daily forecasts
+
+        /// Set a consistent timeText for daily forecasts
         isDailyForecast: true,
+
+        /// Convert DateTime to [year, month, day]
         dateTime: [
           date.toLocal().year,
           date.toLocal().month,
           date.toLocal().day
         ],
-        // Convert DateTime to [year, month, day]
         tempText: "${averageTemp.round()}°C",
       ));
     });
 
     /// Add hourly data to the _forecastBank
-    // for (var item in _hourlyBank) {
     for (int i = 0; i < 17; i++) {
       _forecastBank.add(_hourlyBank[i]);
-      // _forecastBank.add(item);
     }
+
     /// refresh UI
     setState(() {
       _isLoading = false;
@@ -135,6 +129,7 @@ class _ForecastPageState extends State<ForecastPage> {
     });
   }
 
+  /// Finding the most frequent value for daily weatherIcon; mainText; descriptionText
   ForecastModel findMostFrequentForecast(List<ForecastModel> forecasts) {
     Map<ForecastModel, int> frequencyMap = {};
     forecasts.forEach((forecast) {
@@ -154,43 +149,34 @@ class _ForecastPageState extends State<ForecastPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("$_isLoading================");
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const AppBarSecondary(title: 'Forecast'),
-            // SizedBox(height: 12.0),
-            // _forecastBank.length < 40
-            _isLoading ? const LoadingPage() : showForecastContent(),
-          ],
-        ),
+        child: Column(children: [
+          const AppBarSecondary(title: 'Forecast'),
+          _isLoading ? const LoadingPage() : showForecastContent()
+        ]),
       ),
     );
   }
 
-
   Widget showForecastContent() {
-    print('_forecastBank: $_forecastBank');
-    print('length: ${_forecastBank.length}');
+    int firstHourlyData = 0;
     return Flexible(
       child: ListView.builder(
-        // padding: const EdgeInsets.all(8),
-        itemCount: _forecastBank.length,
-        itemBuilder: (BuildContext context, int index) {
-          if (_forecastBank[index].isDailyForecast) {
-            return ListTileWeatherDaily(forecast: _forecastBank[index], index: index);
-            // return weatherDailyListTile(
-            //     forecast: _forecastBank[index], index: index);
-          } else {
-            return ListTileWeatherHourly(forecast: _forecastBank[index], index: index);
-            // return weatherHourlyListTile(
-            //     forecast: _forecastBank[index], index: index);
-          }
-        },
-      ),
+          itemCount: _forecastBank.length,
+          itemBuilder: (BuildContext context, int index) {
+            if (_forecastBank[index].isDailyForecast) {
+              firstHourlyData++;
+              return ListTileWeatherDaily(
+                  forecast: _forecastBank[index], index: index);
+            } else {
+              return ListTileWeatherHourly(
+                  forecast: _forecastBank[index],
+                  index: index,
+                  firstIndex: firstHourlyData);
+            }
+          }),
     );
   }
 }

@@ -2,7 +2,8 @@ import 'package:cloudy_app/models/forecast_model.dart';
 import 'package:flutter/material.dart';
 
 class ListTileWeatherDaily extends StatelessWidget {
-  const ListTileWeatherDaily({super.key, required this.forecast, required this.index});
+  const ListTileWeatherDaily(
+      {super.key, required this.forecast, required this.index});
 
   final ForecastModel forecast;
   final int index;
@@ -15,26 +16,26 @@ class ListTileWeatherDaily extends StatelessWidget {
         children: [
           index == 0
               ? Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Text("Daily forecast",
-                Text("DAILY FORECAST",
-                    style: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontSize: 20.0,
-                      fontFamily: 'Spartan MB',
-                      fontWeight: FontWeight.bold,
-                    )),
-                const SizedBox(height: 10.0),
-                Container(
-                    width: double.infinity,
-                    height: 5,
-                    color: Colors.grey.shade400)
-              ],
-            ),
-          )
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Text("Daily forecast",
+                      Text("DAILY FORECAST",
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 20.0,
+                            fontFamily: 'Spartan MB',
+                            fontWeight: FontWeight.bold,
+                          )),
+                      const SizedBox(height: 10.0),
+                      Container(
+                          width: double.infinity,
+                          height: 5,
+                          color: Colors.grey.shade400)
+                    ],
+                  ),
+                )
               : const SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
