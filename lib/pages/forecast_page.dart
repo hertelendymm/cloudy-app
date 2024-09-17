@@ -1,6 +1,7 @@
 import 'package:cloudy_app/constats.dart';
 import 'package:cloudy_app/models/forecast_model.dart';
 import 'package:cloudy_app/models/weather_model.dart';
+import 'package:cloudy_app/pages/loading_page.dart';
 import 'package:cloudy_app/services/weather_helper.dart';
 import 'package:cloudy_app/widgets/appbar_secondary.dart';
 import 'package:cloudy_app/widgets/button_rounded.dart';
@@ -27,14 +28,21 @@ class _ForecastPageState extends State<ForecastPage> {
 
   // List<ForecastModel> _dailyBank = [];
   List<ForecastModel> _forecastBank = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    _isLoading = true;
     getDataForecast();
   }
 
   void getDataForecast() async {
+    // setState(() async {
+    _forecastBank.clear();
+    // _dailyBank.clear();
+    _hourlyBank.clear();
+
     weatherData = await WeatherHelper().getWeatherForecast48h7d(
         exclude: 'hourly,daily', lat: widget.lat, lon: widget.lon);
     print('weatherData: $weatherData');
@@ -45,111 +53,111 @@ class _ForecastPageState extends State<ForecastPage> {
     //   _forecastBank.add(await getHourlyData());
     // });
 
-    setState(() {
-      /// Clear Forecast Data
-      _forecastBank.clear();
-      // _dailyBank.clear();
-      _hourlyBank.clear();
+    /// Clear Forecast Data
 
-      /// 3 Hourly data
-      hourlyData = weatherData['list'];
-      List jsonListHourly = hourlyData;
-      for (var element in jsonListHourly) {
-        int id = element['weather'][0]['id'];
-        DateTime dateTime =
-            DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
-        int hour = dateTime.hour;
-        List<int> date = [dateTime.year, dateTime.month, dateTime.day];
-        String period = hour >= 12 ? 'PM' : 'AM';
-        hour = hour % 12;
-        hour = hour == 0 ? 12 : hour;
-        String formattedTime = '${hour.toString().padLeft(2, '0')} $period';
-        ForecastModel forecastModel = ForecastModel(
-          weatherIcon: WeatherHelper().getWeatherIcon(id),
-          mainText: element['weather'][0]['main'],
-          descriptionText: element['weather'][0]['description'],
-          timeText: formattedTime,
-          isDailyForecast: false,
-          dateTime: date,
-          tempText: '${(element['main']['temp']).round()}°C',
-        );
-        _hourlyBank.add(forecastModel);
-        // print(forecastModel.toString());
-      }
-      print('_hourlyBank: ${_hourlyBank.length}\n${_hourlyBank[0]}');
-
-      /// Group hourly forecasts by day using fold
-      Map<DateTime, List<ForecastModel>> groupedForecasts =
-          _hourlyBank.fold<Map<DateTime, List<ForecastModel>>>(
-        {},
-        (map, forecast) {
-          final date = DateTime(
-              forecast.dateTime[0], forecast.dateTime[1], forecast.dateTime[2]);
-          if (map.containsKey(date)) {
-            map[date]!.add(forecast);
-          } else {
-            map[date] = [forecast];
-          }
-          return map;
-        },
+    /// 3 Hourly data
+    hourlyData = weatherData['list'];
+    List jsonListHourly = hourlyData;
+    for (var element in jsonListHourly) {
+      int id = element['weather'][0]['id'];
+      DateTime dateTime =
+          DateTime.fromMillisecondsSinceEpoch(element['dt'] * 1000);
+      int hour = dateTime.hour;
+      List<int> date = [dateTime.year, dateTime.month, dateTime.day];
+      String period = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12;
+      hour = hour == 0 ? 12 : hour;
+      String formattedTime = '${hour.toString().padLeft(2, '0')} $period';
+      ForecastModel forecastModel = ForecastModel(
+        weatherIcon: WeatherHelper().getWeatherIcon(id),
+        mainText: element['weather'][0]['main'],
+        descriptionText: element['weather'][0]['description'],
+        timeText: formattedTime,
+        isDailyForecast: false,
+        dateTime: date,
+        tempText: '${(element['main']['temp']).round()}°C',
       );
+      _hourlyBank.add(forecastModel);
+      // print(forecastModel.toString());
+    }
+    print('_hourlyBank: ${_hourlyBank.length}\n${_hourlyBank[0]}');
 
-      /// Calculate average temperature and create daily forecasts
-      groupedForecasts.forEach((date, hourlyForecasts) {
-        double averageTemp = hourlyForecasts
-                .map((forecast) => double.parse(forecast.tempText
-                    .substring(0, forecast.tempText.length - 2)))
-                .reduce((sum, temp) => sum + temp) /
-            hourlyForecasts.length;
-        String dayOfWeek = [
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday',
-          'Sunday'
-        ][date.toLocal().weekday - 1];
-        ForecastModel mostFrequentForecast =
-            findMostFrequentForecast(hourlyForecasts);
+    /// Group hourly forecasts by day using fold
+    Map<DateTime, List<ForecastModel>> groupedForecasts =
+        _hourlyBank.fold<Map<DateTime, List<ForecastModel>>>(
+      {},
+      (map, forecast) {
+        final date = DateTime(
+            forecast.dateTime[0], forecast.dateTime[1], forecast.dateTime[2]);
+        if (map.containsKey(date)) {
+          map[date]!.add(forecast);
+        } else {
+          map[date] = [forecast];
+        }
+        return map;
+      },
+    );
 
-        _forecastBank.add(ForecastModel(
-          weatherIcon: mostFrequentForecast.weatherIcon,
-          mainText: mostFrequentForecast.mainText,
-          descriptionText: mostFrequentForecast.descriptionText,
-          timeText: dayOfWeek,
-          // Set a consistent timeText for daily forecasts
-          isDailyForecast: true,
-          dateTime: [
-            date.toLocal().year,
-            date.toLocal().month,
-            date.toLocal().day
-          ],
-          // Convert DateTime to [year, month, day]
-          tempText: "${averageTemp.round()}°C",
-        ));
-        // _dailyBank.add(ForecastModel(
-        //   weatherIcon: mostFrequentForecast.weatherIcon,
-        //   mainText: mostFrequentForecast.mainText,
-        //   descriptionText: mostFrequentForecast.descriptionText,
-        //   timeText: dayOfWeek,
-        //   // Set a consistent timeText for daily forecasts
-        //   dateTime: [
-        //     date.toLocal().year,
-        //     date.toLocal().month,
-        //     date.toLocal().day
-        //   ],
-        //   // Convert DateTime to [year, month, day]
-        //   tempText: "${averageTemp.round()}°C",
-        // ));
-      });
+    /// Calculate average temperature and create daily forecasts
+    groupedForecasts.forEach((date, hourlyForecasts) {
+      double averageTemp = hourlyForecasts
+              .map((forecast) => double.parse(
+                  forecast.tempText.substring(0, forecast.tempText.length - 2)))
+              .reduce((sum, temp) => sum + temp) /
+          hourlyForecasts.length;
+      String dayOfWeek = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday'
+      ][date.toLocal().weekday - 1];
+      ForecastModel mostFrequentForecast =
+          findMostFrequentForecast(hourlyForecasts);
 
-      /// Add hourly data to the _forecastBank
-      // for (var item in _hourlyBank) {
-      for(int i = 0; i < 17; i++){
-        _forecastBank.add(_hourlyBank[i]);
-        // _forecastBank.add(item);
-      }
+      _forecastBank.add(ForecastModel(
+        weatherIcon: mostFrequentForecast.weatherIcon,
+        mainText: mostFrequentForecast.mainText,
+        descriptionText: mostFrequentForecast.descriptionText,
+        timeText: dayOfWeek,
+        // Set a consistent timeText for daily forecasts
+        isDailyForecast: true,
+        dateTime: [
+          date.toLocal().year,
+          date.toLocal().month,
+          date.toLocal().day
+        ],
+        // Convert DateTime to [year, month, day]
+        tempText: "${averageTemp.round()}°C",
+      ));
+      // _dailyBank.add(ForecastModel(
+      //   weatherIcon: mostFrequentForecast.weatherIcon,
+      //   mainText: mostFrequentForecast.mainText,
+      //   descriptionText: mostFrequentForecast.descriptionText,
+      //   timeText: dayOfWeek,
+      //   // Set a consistent timeText for daily forecasts
+      //   dateTime: [
+      //     date.toLocal().year,
+      //     date.toLocal().month,
+      //     date.toLocal().day
+      //   ],
+      //   // Convert DateTime to [year, month, day]
+      //   tempText: "${averageTemp.round()}°C",
+      // ));
+    });
+
+    /// Add hourly data to the _forecastBank
+    // for (var item in _hourlyBank) {
+    for (int i = 0; i < 17; i++) {
+      _forecastBank.add(_hourlyBank[i]);
+      // _forecastBank.add(item);
+    }
+    /// refresh UI
+    setState(() {
+      _isLoading = false;
+      print("Loading is done.");
     });
   }
 
@@ -173,6 +181,7 @@ class _ForecastPageState extends State<ForecastPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("$_isLoading================");
     return Scaffold(
       backgroundColor: Colors.black,
       // appBar: AppBar(
@@ -194,7 +203,8 @@ class _ForecastPageState extends State<ForecastPage> {
               const AppBarSecondary(title: 'Forecast'),
               // SizedBox(height: 12.0),
               // _forecastBank.length < 40
-              _forecastBank == [] ? loadingScreen() : showForecastContent(),
+              _isLoading ? LoadingPage() : showForecastContent(),
+              // _forecastBank == [] ? loadingScreen() : showForecastContent(),
               // hourlyData == null ? loadingScreen() : showForecastContent(),
               // SizedBox(height: 12.0),
               // Container(
@@ -254,15 +264,13 @@ class _ForecastPageState extends State<ForecastPage> {
     );
   }
 
-
-
-  Widget loadingScreen() {
-    return const Expanded(
-      child: Center(
-        child: CircularProgressIndicator(color: Colors.white),
-      ),
-    );
-  }
+  // Widget loadingScreen() {
+  //   return const Expanded(
+  //     child: Center(
+  //       child: CircularProgressIndicator(color: Colors.white),
+  //     ),
+  //   );
+  // }
 
   Widget showForecastContent() {
     print('_forecastBank: $_forecastBank');
@@ -272,7 +280,6 @@ class _ForecastPageState extends State<ForecastPage> {
         // padding: const EdgeInsets.all(8),
         itemCount: _forecastBank.length,
         itemBuilder: (BuildContext context, int index) {
-
           if (_forecastBank[index].isDailyForecast) {
             return weatherDailyListTile(
                 forecast: _forecastBank[index], index: index);
@@ -307,41 +314,46 @@ class _ForecastPageState extends State<ForecastPage> {
         children: [
           index == 0
               ? Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                 // Text("Daily forecast",
-                 Text("DAILY FORECAST",
-                    style: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontSize: 20.0,
-                      fontFamily: 'Spartan MB',
-                      fontWeight: FontWeight.bold,
-                    )),
-                const SizedBox(height: 10.0),
-                Container(width: double.infinity, height: 5, color: Colors.grey.shade400)
-              ],
-            ),
-          ) : const SizedBox(),
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Text("Daily forecast",
+                      Text("DAILY FORECAST",
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 20.0,
+                            fontFamily: 'Spartan MB',
+                            fontWeight: FontWeight.bold,
+                          )),
+                      const SizedBox(height: 10.0),
+                      Container(
+                          width: double.infinity,
+                          height: 5,
+                          color: Colors.grey.shade400)
+                    ],
+                  ),
+                )
+              : const SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-              flex: 2,
-              child: Padding(
-                  padding: const EdgeInsets.all(0.0),
-                  child: Text(forecast.timeText,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontFamily: 'Spartan MB',
-                        // fontWeight: FontWeight.bold,
-                      ))),
-            ),
+                flex: 2,
+                child: Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: Text(forecast.timeText,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontFamily: 'Spartan MB',
+                          // fontWeight: FontWeight.bold,
+                        ))),
+              ),
               Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 0.0, horizontal: 20.0),
                   child: Icon(
                     forecast.weatherIcon.iconData,
                     color: forecast.weatherIcon.color,
@@ -362,7 +374,6 @@ class _ForecastPageState extends State<ForecastPage> {
                 ),
               ),
               // const SizedBox(width: 0.0),
-
             ],
           ),
           // Row(
@@ -417,24 +428,29 @@ class _ForecastPageState extends State<ForecastPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          index == 6 ? Padding(
-            padding: const EdgeInsets.fromLTRB(0, 60, 0, 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Text("Daily forecast",
-                Text("48 HOUR FORECAST",
-                    style: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontSize: 20.0,
-                      fontFamily: 'Spartan MB',
-                      fontWeight: FontWeight.bold,
-                    )),
-                const SizedBox(height: 10.0),
-                Container(width: double.infinity, height: 5, color: Colors.grey.shade400)
-              ],
-            ),
-          ) : const SizedBox(),
+          index == 6
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Text("Daily forecast",
+                      Text("48 HOUR FORECAST",
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 20.0,
+                            fontFamily: 'Spartan MB',
+                            fontWeight: FontWeight.bold,
+                          )),
+                      const SizedBox(height: 10.0),
+                      Container(
+                          width: double.infinity,
+                          height: 5,
+                          color: Colors.grey.shade400)
+                    ],
+                  ),
+                )
+              : const SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -452,7 +468,8 @@ class _ForecastPageState extends State<ForecastPage> {
                             )))),
               ),
               Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 16.0),
                   child: Icon(
                     forecast.weatherIcon.iconData,
                     color: forecast.weatherIcon.color,

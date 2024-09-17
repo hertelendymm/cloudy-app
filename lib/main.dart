@@ -2,6 +2,7 @@ import 'package:cloudy_app/constats.dart';
 import 'package:cloudy_app/models/weather_model.dart';
 import 'package:cloudy_app/models/weathericon_model.dart';
 import 'package:cloudy_app/pages/forecast_page.dart';
+import 'package:cloudy_app/pages/loading_page.dart';
 import 'package:cloudy_app/pages/search_page.dart';
 import 'package:cloudy_app/services/weather_helper.dart';
 import 'package:cloudy_app/widgets/button_rounded.dart';
@@ -95,13 +96,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SafeArea(child: _isLoading ? _loadingPage() : _currentLocation()),
+      body: SafeArea(child: _isLoading ? const LoadingPage() : _currentLocation()),
+      // body: SafeArea(child: _isLoading ? _loadingPage() : _currentLocation()),
     );
   }
 
-  Widget _loadingPage() {
-    return const Center(child: CircularProgressIndicator(color: Colors.white));
-  }
+  // Widget _loadingPage() {
+  //   return const Center(child: CircularProgressIndicator(color: Colors.white));
+  // }
 
   Widget _currentLocation() {
     return Padding(
