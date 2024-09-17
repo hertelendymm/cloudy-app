@@ -151,45 +151,76 @@ class _ForecastPageState extends State<ForecastPage> {
                   color: Colors.white, size: 40.0)),
           title: const Text('Forecast', style: kCityTitleTextStyleNight)),
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-              Flexible(
-                  child: ButtonRounded(
-                      function: () {
-                        setState(() {
-                          isHourlyPage = true;
-                        });
-                      },
-                      backgroundColor: Colors.white.withOpacity(0.2),
-                      text: '48 hour')),
-              const SizedBox(width: 20.0),
-              Flexible(
-                  child: ButtonRounded(
-                      function: () {
-                        setState(() {
-                          isHourlyPage = false;
-                        });
-                      },
-                      backgroundColor: Colors.white.withOpacity(0.2),
-                      text: '5 day')),
-                ],
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          // padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              SizedBox(height: 12.0),
+              hourlyData == null ? loadingScreen() : showForecastContent(),
+              SizedBox(height: 12.0),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade900,
+                    // borderRadius: BorderRadius.circular(10.0),
+                  ),
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                          child: ButtonRounded(
+                              function: () {
+                                setState(() {
+                                  isHourlyPage = true;
+                                });
+                              },
+                              backgroundColor: isHourlyPage
+                                  ? Colors.black
+                                  : Colors.transparent,
+                              text: '48 hour')),
+                      // const SizedBox(width: 20.0),
+                      Flexible(
+                          child: ButtonRounded(
+                              function: () {
+                                setState(() {
+                                  isHourlyPage = false;
+                                });
+                              },
+                              backgroundColor: isHourlyPage
+                                  ? Colors.transparent
+                                  : Colors.black,
+                              // backgroundColor: Colors.white.withOpacity(0.2),
+                              text: '5 day')),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            hourlyData == null ? loadingScreen() : showForecastContent(),
-        ],
+              // Container(
+              //   width: MediaQuery.of(context).size.width,
+              //   height: 1.0,
+              //   margin: EdgeInsets.fromLTRB(0, 20.0, 0.0, 8.0),
+              //   color: Colors.white,
+              // ),
+              // SizedBox(height: 12.0),
+              // hourlyData == null ? loadingScreen() : showForecastContent(),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget loadingScreen() {
-    return const Center(
-      child: CircularProgressIndicator(color: Colors.white),
+    return const Expanded(
+      child:  Center(
+        child: CircularProgressIndicator(color: Colors.white),
+      ),
     );
   }
 
@@ -197,13 +228,13 @@ class _ForecastPageState extends State<ForecastPage> {
     return Flexible(
         child: isHourlyPage
             ? ListView.builder(
-                padding: const EdgeInsets.all(8),
+                // padding: const EdgeInsets.all(8),
                 itemCount: 16,
                 itemBuilder: (BuildContext context, int index) {
                   return weatherHourlyListTile(forecast: _hourlyBank[index]);
                 })
             : ListView.builder(
-                padding: const EdgeInsets.all(8),
+                // padding: const EdgeInsets.all(8),
                 itemCount: _dailyBank.length,
                 itemBuilder: (BuildContext context, int index) {
                   return weatherDailyListTile(forecast: _dailyBank[index]);
@@ -212,7 +243,7 @@ class _ForecastPageState extends State<ForecastPage> {
 
   Widget weatherHourlyListTile({required ForecastModel forecast}) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       child: Column(
         children: [
           Row(
@@ -307,7 +338,7 @@ class _ForecastPageState extends State<ForecastPage> {
     required ForecastModel forecast,
   }) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
