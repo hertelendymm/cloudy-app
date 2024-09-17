@@ -161,7 +161,7 @@ class _ForecastPageState extends State<ForecastPage> {
               SizedBox(height: 12.0),
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.grey.shade900,
+                    color: Colors.grey.withOpacity(0.1),
                     // borderRadius: BorderRadius.circular(10.0),
                   ),
                 padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
