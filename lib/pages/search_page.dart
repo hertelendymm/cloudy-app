@@ -1,4 +1,5 @@
 import 'package:cloudy_app/constats.dart';
+import 'package:cloudy_app/widgets/appbar_secondary.dart';
 import 'package:cloudy_app/widgets/button_rounded.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,57 +17,61 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        centerTitle: true,
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          onPressed: ()=> Navigator.pop(context),
-          icon: const Icon(FontAwesomeIcons.angleLeft,
-              color: Colors.white, size: 40.0),
-        ),
-        title: const Text('Search', style: kCityTitleTextStyleNight),
-      ),
+      // appBar: AppBar(
+      //   elevation: 0.0,
+      //   centerTitle: true,
+      //   backgroundColor: Colors.black,
+      //   leading: IconButton(
+      //     onPressed: ()=> Navigator.pop(context),
+      //     icon: const Icon(FontAwesomeIcons.angleLeft,
+      //         color: Colors.white, size: 40.0),
+      //   ),
+      //   title: const Text('Search', style: kCityTitleTextStyleNight),
+      // ),
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: TextField(
-                        style: const TextStyle(color: Colors.black),
-                        decoration: kTextFieldInputDecorationNight,
-                        onChanged: (value) {
-                          cityName = value;
-                        })),
-                ButtonRounded(
-                    text: 'Get Weather',
-                    backgroundColor: Colors.white.withOpacity(0.2),
-                    // isNightMode: true,
-                    function: () {
-                      print('Close Serach Page');
-                      Navigator.pop(context, cityName);
-                      print('Search page closed');
-                    })
-              ],
-            ),
-            const SizedBox(height: 20.0),
-            const Center(
+        child: Column(
+          children: [
+            const AppBarSecondary(title: 'Search'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                // padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 children: <Widget>[
-                  Text('Made by hertelendymm',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white)),
-                  Text('Data provided by OpenWeatherMap',
-                      style: TextStyle(color: Colors.white)),
+                  Container(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: TextField(
+                          style: const TextStyle(color: Colors.black),
+                          decoration: kTextFieldInputDecorationNight,
+                          onChanged: (value) {
+                            cityName = value;
+                          })),
+                  ButtonRounded(
+                      text: 'Get Weather',
+                      backgroundColor: Colors.white.withOpacity(0.2),
+                      // isNightMode: true,
+                      function: () {
+                        print('Close Serach Page');
+                        Navigator.pop(context, cityName);
+                        print('Search page closed');
+                      }),
+                  const SizedBox(height: 20.0),
+                  const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text('Made by hertelendymm',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white)),
+                        Text('Data provided by OpenWeatherMap',
+                            style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

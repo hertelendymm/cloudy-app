@@ -7,6 +7,7 @@ class ForecastModel {
   final String timeText;
   final List<int> dateTime; /// [year, month, day]
   final String tempText;
+  final bool isDailyForecast;
 
   ForecastModel({
     required this.weatherIcon,
@@ -15,10 +16,11 @@ class ForecastModel {
     required this.timeText,
     required this.dateTime,
     required this.tempText,
+    required this.isDailyForecast,
   });
 
   @override
   String toString() {
-    return "ForecastModel {weatherIcon: $weatherIcon, mainText: $mainText, descriptionText: $descriptionText, timeText: $timeText, dateTime: $dateTime, tempText: $tempText}\n";
+    return "ForecastModel {weatherIcon: $weatherIcon, mainText: $mainText, descriptionText: $descriptionText, timeText: $timeText, dateTime: $dateTime, tempText: $tempText, isDailyForecast: $isDailyForecast}\n";
   }
 }
