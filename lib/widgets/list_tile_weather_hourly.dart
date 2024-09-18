@@ -45,6 +45,7 @@ class ListTileWeatherHourly extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
+                flex: 1,
                 // flex: 2,
                 child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -57,14 +58,18 @@ class ListTileWeatherHourly extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             )))),
               ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 16.0),
-                  child: Icon(
-                    forecast.weatherIcon.iconData,
-                    color: forecast.weatherIcon.color,
-                    size: 40.0,
-                  )),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 16.0),
+                    child: Icon(
+                      forecast.weatherIcon.iconData,
+                      color: forecast.weatherIcon.color,
+                      size: 40.0,
+                    )),
+              ),
+              SizedBox(width: 10.0),
               Expanded(
                 flex: 3,
                 child: Column(
@@ -83,6 +88,7 @@ class ListTileWeatherHourly extends StatelessWidget {
                 ),
               ),
               Expanded(
+                flex: 1,
                 // flex: 2,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),

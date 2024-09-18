@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _currentLocation() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -152,45 +152,56 @@ class _MyHomePageState extends State<MyHomePage> {
               )
             ],
           ),
-          const SizedBox(height: 0.0),
+          // const SizedBox(height: 0.0),
         ],
       ),
     );
   }
 
   Widget _myAppBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        GestureDetector(
-          child: Container(
-            padding:
-                const EdgeInsets.symmetric(vertical: 24.0, horizontal: 14.0),
-            child: const Icon(FontAwesomeIcons.lightbulb, color: Colors.white),
-          ),
-        ),
-        Text('Cloudy App',
-            style: kCityTitleTextStyleNight.copyWith(
-                fontSize: 20.0, color: Colors.white)),
-        GestureDetector(
-            onTap: () async {
-              /// Refresh Button
-              setState(() {
-                otherLocation = '';
-                _isLoading = true;
-              });
-              getLocationData();
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: (){
+              /// Change appTheme in SharedPref and refresh app
             },
             child: Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 24.0, horizontal: 14.0),
-              child: const Icon(
-                FontAwesomeIcons.rotate,
-                color: Colors.white,
-              ),
-            )),
-      ],
+              child: const Icon(FontAwesomeIcons.solidLightbulb, color: Colors.white),
+              // child: const Icon(FontAwesomeIcons.lightbulb, color: Colors.white),
+            ),
+          ),
+          Text('Cloudy App',
+              style: kCityTitleTextStyleNight.copyWith(
+                  fontSize: 20.0, color: Colors.white)),
+          GestureDetector(
+              onTap: () async {
+                /// Refresh Button
+                setState(() {
+                  otherLocation = '';
+                  _isLoading = true;
+                });
+                getLocationData();
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 24.0, horizontal: 14.0),
+                child: const Icon(
+                  FontAwesomeIcons.rotate,
+                  color: Colors.white,
+                ),
+              )),
+        ],
+      ),
     );
   }
 

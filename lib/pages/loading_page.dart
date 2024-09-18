@@ -5,7 +5,7 @@ class LoadingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -17,7 +17,7 @@ class LoadingPage extends StatelessWidget {
                 "If the loading goes for too long:\n - Check your internet connection\n - Allow location permissions\n - Restart the app\n - Check if update is available in the store",
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.grey.shade700,
                   fontSize: 16.0,
                   fontFamily: 'Spartan MB',
                 )),

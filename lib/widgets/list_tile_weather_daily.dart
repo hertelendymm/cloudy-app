@@ -41,7 +41,7 @@ class ListTileWeatherDaily extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Padding(
                     padding: const EdgeInsets.all(0.0),
                     child: Text(forecast.timeText,
@@ -53,24 +53,30 @@ class ListTileWeatherDaily extends StatelessWidget {
                           // fontWeight: FontWeight.bold,
                         ))),
               ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 2.0, horizontal: 20.0),
-                  child: Icon(
-                    forecast.weatherIcon.iconData,
-                    color: forecast.weatherIcon.color,
-                    size: 40.0,
-                  )),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(forecast.tempText,
-                    textAlign: TextAlign.end,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontFamily: 'Spartan MB',
-                      fontWeight: FontWeight.bold,
+              Expanded(
+                flex: 1,
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 2.0, horizontal: 20.0),
+                    child: Icon(
+                      forecast.weatherIcon.iconData,
+                      color: forecast.weatherIcon.color,
+                      size: 40.0,
                     )),
+              ),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text(forecast.tempText,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontFamily: 'Spartan MB',
+                        fontWeight: FontWeight.bold,
+                      )),
+                ),
               ),
               // const SizedBox(width: 0.0),
             ],
