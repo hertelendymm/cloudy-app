@@ -154,7 +154,7 @@ class _ForecastPageState extends State<ForecastPage> {
       body: SafeArea(
         child: Column(children: [
           const AppBarSecondary(title: 'Forecast'),
-          _isLoading ? const LoadingPage() : showForecastContent()
+          _isLoading ? const Expanded(child: LoadingPage()): showForecastContent(),
         ]),
       ),
     );

@@ -96,7 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SafeArea(child: _isLoading ? const LoadingPage() : _currentLocation()),
+      body: SafeArea(
+          child: _isLoading ? const LoadingPage() : _currentLocation()),
     );
   }
 
@@ -108,11 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           _myAppBar(),
           _weatherTitle(),
-          Icon(
-            weatherIcon.iconData,
-            color: weatherIcon.color,
-            size: 140.0,
-          ),
+          Icon(weatherIcon.iconData, color: weatherIcon.color, size: 140.0),
           _weatherDescription(),
           Row(
             children: [
@@ -138,8 +135,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     function: () async {
                       var typedCityName = await Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                            return const SearchPage();
-                          }));
+                        return const SearchPage();
+                      }));
                       if (typedCityName != null) {
                         print('typedCityName: $typedCityName');
                         setState(() {
@@ -161,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _myAppBar() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.08),
+        color: Colors.white.withOpacity(0.06),
         borderRadius: BorderRadius.circular(16.0),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -170,13 +167,14 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               /// Change appTheme in SharedPref and refresh app
             },
             child: Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 24.0, horizontal: 14.0),
-              child: const Icon(FontAwesomeIcons.solidLightbulb, color: Colors.white),
+              child: const Icon(FontAwesomeIcons.solidLightbulb,
+                  color: Colors.white),
               // child: const Icon(FontAwesomeIcons.lightbulb, color: Colors.white),
             ),
           ),
@@ -193,8 +191,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 getLocationData();
               },
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 24.0, horizontal: 14.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 24.0, horizontal: 14.0),
                 child: const Icon(
                   FontAwesomeIcons.rotate,
                   color: Colors.white,
