@@ -1,4 +1,3 @@
-import 'package:cloudy_app/constants.dart';
 import 'package:cloudy_app/widgets/appbar_secondary.dart';
 import 'package:cloudy_app/widgets/button_rounded.dart';
 import 'package:flutter/material.dart';
@@ -42,10 +41,10 @@ class _SearchPageState extends State<SearchPage> {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                             hintText: 'Enter City Name',
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               color: Colors.grey,
                             ),
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10.0),
                               ),

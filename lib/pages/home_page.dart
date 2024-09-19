@@ -1,4 +1,3 @@
-import 'package:cloudy_app/constants.dart';
 import 'package:cloudy_app/models/weather_model.dart';
 import 'package:cloudy_app/models/weathericon_model.dart';
 import 'package:cloudy_app/pages/forecast_page.dart';
