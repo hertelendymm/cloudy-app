@@ -5,13 +5,9 @@ class ListTileWeatherHourly extends StatelessWidget {
   const ListTileWeatherHourly(
       {super.key,
       required this.forecast,
-      // required this.index,
-      // required this.firstIndex
       });
 
   final ForecastModel forecast;
-  // final int index;
-  // final int firstIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -20,34 +16,11 @@ class ListTileWeatherHourly extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // index == firstIndex
-          //     ? Padding(
-          //         padding: const EdgeInsets.fromLTRB(0, 60, 0, 20.0),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             Text("48 HOUR FORECAST",
-          //                 style: TextStyle(
-          //                   color: Colors.grey.shade400,
-          //                   fontSize: 20.0,
-          //                   fontFamily: 'Spartan MB',
-          //                   fontWeight: FontWeight.bold,
-          //                 )),
-          //             const SizedBox(height: 10.0),
-          //             Container(
-          //                 width: double.infinity,
-          //                 height: 5,
-          //                 color: Colors.grey.shade400)
-          //           ],
-          //         ),
-          //       )
-          //     : const SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 flex: 1,
-                // flex: 2,
                 child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Center(

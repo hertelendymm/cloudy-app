@@ -5,11 +5,10 @@ class ListTileWeatherDaily extends StatelessWidget {
   const ListTileWeatherDaily({
     super.key,
     required this.forecast,
-    // required this.index
   });
 
   final ForecastModel forecast;
-  // final int index;
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,29 +16,6 @@ class ListTileWeatherDaily extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
       child: Column(
         children: [
-          // index == 0
-          //     ? Padding(
-          //         padding: const EdgeInsets.fromLTRB(0, 20, 0, 20.0),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             // Text("Daily forecast",
-          //             Text("DAILY FORECAST",
-          //                 style: TextStyle(
-          //                   color: Colors.grey.shade400,
-          //                   fontSize: 20.0,
-          //                   fontFamily: 'Spartan MB',
-          //                   fontWeight: FontWeight.bold,
-          //                 )),
-          //             const SizedBox(height: 10.0),
-          //             Container(
-          //                 width: double.infinity,
-          //                 height: 5,
-          //                 color: Colors.grey.shade400)
-          //           ],
-          //         ),
-          //       )
-          //     : const SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
