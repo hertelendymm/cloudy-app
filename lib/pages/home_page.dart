@@ -70,8 +70,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Theme.of(context).colorScheme.surface,
-      // statusBarIconBrightness: Theme.of(context).brightness,
+        statusBarColor: Colors.transparent,
+        // statusBarColor: Theme.of(context).colorScheme.surface,
+      // statusBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Theme.of(context).brightness == Brightness.dark
+          ? Brightness.light
+          : Brightness.dark,
     ));
     return Scaffold(
       appBar: null, // Remove the default app bar

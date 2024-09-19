@@ -26,59 +26,47 @@ class _SearchPageState extends State<SearchPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
-                // padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 children: <Widget>[
                   Container(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: TextField(
-                          style:  TextStyle(color: Theme.of(context).colorScheme.primary),
-                          // decoration: kTextFieldInputDecorationNight,
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
                           decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                            icon: Icon(
-                              Icons.location_city,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            hintText: 'Enter City Name',
-                            hintStyle: const TextStyle(
-                              color: Colors.grey,
-                            ),
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
+                              filled: true,
+                              fillColor: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                              icon: Icon(
+                                Icons.location_city,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
+                              hintText: 'Enter City Name',
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              border: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)),
+                                  borderSide: BorderSide.none)),
                           onChanged: (value) {
                             cityName = value;
                           })),
                   ButtonRounded(
                       text: 'Get Weather',
-                      backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.onPrimaryContainer,
                       textColor: Theme.of(context).colorScheme.primary,
-                      // isNightMode: true,
-                      function: () {
-                        Navigator.pop(context, cityName);
-                      }),
+                      function: () => Navigator.pop(context, cityName)),
                   const SizedBox(height: 20.0),
                   Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        // Text('Made by hertelendymm',
-                        //     textAlign: TextAlign.center,
-                        //     style: TextStyle(color: Theme.of(context).colorScheme.primary)),
-                        Text('Data provided by OpenWeatherMap',
-                            style: TextStyle(color: Theme.of(context).colorScheme.primary)),
-                      ],
-                    ),
+                    child: Text('Data provided by OpenWeatherMap',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 12.0,
+                            fontFamily: 'Spartan MB')),
                   )
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),

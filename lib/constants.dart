@@ -2,20 +2,18 @@ import 'package:flutter/material.dart';
 
 ThemeData lightMode = ThemeData(
   brightness: Brightness.light,
-
-
   colorScheme: ColorScheme.light(
     surface: Colors.brown.shade100,
-    // surface: Colors.white,
     primary: Colors.black,
     secondary: Colors.grey.shade800,
-    onPrimaryContainer: Colors.black.withOpacity(0.1),
-    onSecondaryContainer: Colors.black.withOpacity(0.06),
+    onPrimaryContainer: Colors.brown.withOpacity(0.1),
+    // onPrimaryContainer: Colors.black.withOpacity(0.1),
+    onSecondaryContainer: Colors.brown.withOpacity(0.1),
+    // onSecondaryContainer: Colors.black.withOpacity(0.06),
   ),
 );
 
 ThemeData darkMode = ThemeData(
-    // appBarTheme: AppBarTheme(backgroundColor: Colors.black),
     brightness: Brightness.dark,
     colorScheme: ColorScheme.dark(
       surface: Colors.black,
