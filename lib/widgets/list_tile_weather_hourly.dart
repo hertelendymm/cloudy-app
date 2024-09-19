@@ -2,10 +2,10 @@ import 'package:cloudy_app/models/forecast_model.dart';
 import 'package:flutter/material.dart';
 
 class ListTileWeatherHourly extends StatelessWidget {
-  const ListTileWeatherHourly(
-      {super.key,
-      required this.forecast,
-      });
+  const ListTileWeatherHourly({
+    super.key,
+    required this.forecast,
+  });
 
   final ForecastModel forecast;
 
@@ -25,8 +25,8 @@ class ListTileWeatherHourly extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Center(
                         child: Text(forecast.timeText,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: 16.0,
                               fontFamily: 'Spartan MB',
                               fontWeight: FontWeight.bold,
@@ -51,13 +51,14 @@ class ListTileWeatherHourly extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(forecast.mainText,
-                        style: const TextStyle(
-                            color: Colors.white,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: 'Spartan MB',
                             fontSize: 14.0)),
                     Text(forecast.descriptionText,
-                        style: const TextStyle(
-                            color: Colors.white, letterSpacing: 0.3)),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            letterSpacing: 0.3)),
                   ],
                 ),
               ),
@@ -68,8 +69,8 @@ class ListTileWeatherHourly extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Center(
                       child: Text(forecast.tempText,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
                             fontSize: 18.0,
                             fontFamily: 'Spartan MB',
                             fontWeight: FontWeight.bold,
@@ -89,17 +90,17 @@ class ListTileWeatherHourly extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width * 0.3,
                         height: 1.0,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
-                      const Text('Next Day',
+                      Text('Next Day',
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.primary,
                               fontFamily: 'Spartan MB',
                               fontWeight: FontWeight.bold)),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.3,
                         height: 1.0,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ],
                   ),

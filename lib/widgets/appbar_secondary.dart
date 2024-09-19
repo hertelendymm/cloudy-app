@@ -22,10 +22,10 @@ class AppBarSecondary extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 14.0, vertical: 10.0),
                   decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
                       borderRadius: BorderRadius.circular(10.0)),
-                  child: const Icon(FontAwesomeIcons.angleLeft,
-                      color: Colors.white, size: 24.0),
+                  child: Icon(FontAwesomeIcons.angleLeft,
+                      color: Theme.of(context).colorScheme.primary, size: 24.0),
                 ),
               ),
               Flexible(
@@ -33,8 +33,8 @@ class AppBarSecondary extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(title,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          color: Colors.white,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
                           fontSize: 22.0,
                           fontFamily: 'Spartan MB',
                           fontWeight: FontWeight.bold)),
@@ -45,7 +45,7 @@ class AppBarSecondary extends StatelessWidget {
           ),
         ),
         Container(
-            width: double.infinity, height: 1, color: Colors.grey.shade900)
+            width: double.infinity, height: 1, color: Theme.of(context).colorScheme.primary)
       ],
     );
   }

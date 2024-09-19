@@ -30,6 +30,7 @@ class ButtonRounded extends StatelessWidget {
               style: TextStyle(
                 color: textColor,
                 fontSize: 18.0,
+                fontFamily: 'Spartan MB',
                 fontWeight: FontWeight.bold,
               )),
         ),

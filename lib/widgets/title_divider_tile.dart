@@ -14,13 +14,15 @@ class TitleDividerTile extends StatelessWidget {
         children: [
           Text(title,
               style: TextStyle(
-                  color: Colors.grey.shade400,
+                  color: Theme.of(context).colorScheme.secondary,
+                  // color: Colors.grey.shade400,
                   fontSize: 20.0,
                   fontFamily: 'Spartan MB',
                   fontWeight: FontWeight.bold)),
           const SizedBox(height: 10.0),
           Container(
-              width: double.infinity, height: 5, color: Colors.grey.shade400)
+              width: double.infinity, height: 5, color: Theme.of(context).colorScheme.primary)
+              // width: double.infinity, height: 5, color: Colors.grey.shade400)
         ],
       ),
     );

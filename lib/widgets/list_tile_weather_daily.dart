@@ -25,8 +25,8 @@ class ListTileWeatherDaily extends StatelessWidget {
                     padding: const EdgeInsets.all(0.0),
                     child: Text(forecast.timeText,
                         textAlign: TextAlign.left,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
                           fontSize: 22.0,
                           fontFamily: 'Spartan MB',
                           // fontWeight: FontWeight.bold,
@@ -49,8 +49,8 @@ class ListTileWeatherDaily extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Text(forecast.tempText,
                       textAlign: TextAlign.end,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
                         fontSize: 20.0,
                         fontFamily: 'Spartan MB',
                         fontWeight: FontWeight.bold,

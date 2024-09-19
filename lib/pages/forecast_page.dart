@@ -6,6 +6,7 @@ import 'package:cloudy_app/widgets/list_tile_weather_daily.dart';
 import 'package:cloudy_app/widgets/list_tile_weather_hourly.dart';
 import 'package:cloudy_app/widgets/title_divider_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ForecastPage extends StatefulWidget {
   const ForecastPage({super.key, required this.lon, required this.lat, required this.cityName});
@@ -152,8 +153,10 @@ class _ForecastPageState extends State<ForecastPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).colorScheme.surface));
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Column(children: [
           AppBarSecondary(title: widget.cityName),

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
-/// TODO remove apiKey
+/// TODO remove apiKey and delete from the OpenWeatherMap
 const apiKey = '4ef2575bccd3ceab784dcd713ba20758';
 // const apiKey = 'API_KEY';
 const openWeatherMapCURRENT = 'https://api.openweathermap.org/data/2.5/weather';

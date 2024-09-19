@@ -1,7 +1,8 @@
-import 'package:cloudy_app/constats.dart';
+import 'package:cloudy_app/constants.dart';
 import 'package:cloudy_app/widgets/appbar_secondary.dart';
 import 'package:cloudy_app/widgets/button_rounded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -15,8 +16,10 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).colorScheme.surface));
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
@@ -29,29 +32,48 @@ class _SearchPageState extends State<SearchPage> {
                   Container(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: TextField(
-                          style: const TextStyle(color: Colors.black),
-                          decoration: kTextFieldInputDecorationNight,
+                          style:  TextStyle(color: Theme.of(context).colorScheme.primary),
+                          // decoration: kTextFieldInputDecorationNight,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                            icon: Icon(
+                              Icons.location_city,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            hintText: 'Enter City Name',
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
                           onChanged: (value) {
                             cityName = value;
                           })),
                   ButtonRounded(
                       text: 'Get Weather',
-                      backgroundColor: Colors.white.withOpacity(0.2),
+                      backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                      textColor: Theme.of(context).colorScheme.primary,
                       // isNightMode: true,
                       function: () {
                         Navigator.pop(context, cityName);
                       }),
                   const SizedBox(height: 20.0),
-                  const Center(
+                  Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Text('Made by hertelendymm',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white)),
+                        // Text('Made by hertelendymm',
+                        //     textAlign: TextAlign.center,
+                        //     style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                         Text('Data provided by OpenWeatherMap',
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                       ],
                     ),
                   )

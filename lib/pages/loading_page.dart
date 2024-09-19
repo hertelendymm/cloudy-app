@@ -10,14 +10,15 @@ class LoadingPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SizedBox(),
-          const CircularProgressIndicator(color: Colors.white),
+          CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(
                 "If the loading goes for too long:\n - Check your internet connection\n - Allow location permissions\n - Restart the app\n - Check if update is available in the store",
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                  color: Colors.grey.shade700,
+                  color: Theme.of(context).colorScheme.primary,
+                  // color: Colors.grey.shade700,
                   fontSize: 16.0,
                   fontFamily: 'Spartan MB',
                 )),
