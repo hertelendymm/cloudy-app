@@ -41,7 +41,6 @@ class WeatherHelper {
         '$openWeatherMap5dPer3h?lat=$lat&lon=$lon&appid=$apiKey&units=metric');
 
     var weatherData = await networkHelper.getData();
-    print('getWeatherForecast: \n${weatherData.toString()}');
     return weatherData;
   }
 

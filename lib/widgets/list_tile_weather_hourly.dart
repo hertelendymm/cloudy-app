@@ -70,7 +70,7 @@ class ListTileWeatherHourly extends StatelessWidget {
                       size: 40.0,
                     )),
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Expanded(
                 flex: 3,
                 child: Column(

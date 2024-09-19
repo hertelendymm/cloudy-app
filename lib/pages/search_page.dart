@@ -39,9 +39,7 @@ class _SearchPageState extends State<SearchPage> {
                       backgroundColor: Colors.white.withOpacity(0.2),
                       // isNightMode: true,
                       function: () {
-                        print('Close Serach Page');
                         Navigator.pop(context, cityName);
-                        print('Search page closed');
                       }),
                   const SizedBox(height: 20.0),
                   const Center(

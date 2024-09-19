@@ -60,8 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
       /// Load other location's data
       weatherData = await WeatherHelper().getCityWeather(otherLocation);
     } else {
-      print('Current location');
-
       /// Load currents location's data
       weatherData = await WeatherHelper().getLocationWeather();
     }
@@ -76,7 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
             WeatherHelper().getWeatherIcon(int.parse(forecastModel.condition));
       });
     } else {
-      print("WEATHER DATA IS NULL HERE -------------------");
       forecastModel = WeatherModel(
           lon: "0.0",
           lat: "0.0",
@@ -139,7 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         return const SearchPage();
                       }));
                       if (typedCityName != null) {
-                        print('typedCityName: $typedCityName');
                         setState(() {
                           _isLoading = true;
                           otherLocation = typedCityName;
