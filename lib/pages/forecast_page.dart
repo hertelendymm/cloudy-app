@@ -4,13 +4,15 @@ import 'package:cloudy_app/services/weather_helper.dart';
 import 'package:cloudy_app/widgets/appbar_secondary.dart';
 import 'package:cloudy_app/widgets/list_tile_weather_daily.dart';
 import 'package:cloudy_app/widgets/list_tile_weather_hourly.dart';
+import 'package:cloudy_app/widgets/title_divider_tile.dart';
 import 'package:flutter/material.dart';
 
 class ForecastPage extends StatefulWidget {
-  const ForecastPage({super.key, required this.lon, required this.lat});
+  const ForecastPage({super.key, required this.lon, required this.lat, required this.cityName});
 
   final String lon;
   final String lat;
+  final String cityName;
 
   @override
   State<ForecastPage> createState() => _ForecastPageState();
@@ -20,7 +22,7 @@ class _ForecastPageState extends State<ForecastPage> {
   var weatherData;
   var hourlyData;
   List<ForecastModel> _hourlyBank = [];
-  List<ForecastModel> _forecastBank = [];
+  List<Widget> _forecastBank = [];
   bool _isLoading = true;
 
   @override
@@ -79,6 +81,8 @@ class _ForecastPageState extends State<ForecastPage> {
       },
     );
 
+    /// Add title widget for the ListView.builder
+    _forecastBank.add(const TitleDividerTile(title: "DAILY FORECAST"));
     /// Calculate average temperature and create daily forecasts
     groupedForecasts.forEach((date, hourlyForecasts) {
       double averageTemp = hourlyForecasts
@@ -98,28 +102,27 @@ class _ForecastPageState extends State<ForecastPage> {
       ForecastModel mostFrequentForecast =
           findMostFrequentForecast(hourlyForecasts);
 
-      _forecastBank.add(ForecastModel(
-        weatherIcon: mostFrequentForecast.weatherIcon,
-        mainText: mostFrequentForecast.mainText,
-        descriptionText: mostFrequentForecast.descriptionText,
-        timeText: dayOfWeek,
-
-        /// Set a consistent timeText for daily forecasts
-        isDailyForecast: true,
-
-        /// Convert DateTime to [year, month, day]
-        dateTime: [
-          date.toLocal().year,
-          date.toLocal().month,
-          date.toLocal().day
-        ],
-        tempText: "${averageTemp.round()}°C",
-      ));
+      ForecastModel foreacastOfTheDay = ForecastModel(
+          weatherIcon: mostFrequentForecast.weatherIcon,
+          mainText: mostFrequentForecast.mainText,
+          descriptionText: mostFrequentForecast.descriptionText,
+          timeText: dayOfWeek,
+          isDailyForecast: true,
+          dateTime: [
+            date.toLocal().year,
+            date.toLocal().month,
+            date.toLocal().day
+          ],
+          tempText: "${averageTemp.round()}°C",
+        );
+      _forecastBank.add(ListTileWeatherDaily(forecast: foreacastOfTheDay));
     });
 
+    /// Add title widget for the ListView.builder
+    _forecastBank.add(const TitleDividerTile(title: "48 HOUR FORECAST"));
     /// Add hourly data to the _forecastBank
     for (int i = 0; i < 17; i++) {
-      _forecastBank.add(_hourlyBank[i]);
+      _forecastBank.add(ListTileWeatherHourly(forecast: _hourlyBank[i]));
     }
 
     /// refresh UI
@@ -153,7 +156,7 @@ class _ForecastPageState extends State<ForecastPage> {
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(children: [
-          const AppBarSecondary(title: 'Forecast'),
+          AppBarSecondary(title: widget.cityName),
           _isLoading ? const Expanded(child: LoadingPage()): showForecastContent(),
         ]),
       ),
@@ -161,21 +164,11 @@ class _ForecastPageState extends State<ForecastPage> {
   }
 
   Widget showForecastContent() {
-    int firstHourlyData = 0;
     return Flexible(
       child: ListView.builder(
           itemCount: _forecastBank.length,
           itemBuilder: (BuildContext context, int index) {
-            if (_forecastBank[index].isDailyForecast) {
-              firstHourlyData++;
-              return ListTileWeatherDaily(
-                  forecast: _forecastBank[index], index: index);
-            } else {
-              return ListTileWeatherHourly(
-                  forecast: _forecastBank[index],
-                  index: index,
-                  firstIndex: firstHourlyData);
-            }
+            return _forecastBank[index];
           }),
     );
   }

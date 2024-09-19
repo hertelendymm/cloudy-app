@@ -121,6 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ForecastPage(
+                                cityName: forecastModel.cityName,
                                 lat: forecastModel.lat,
                                 lon: forecastModel.lon,
                               ))),
@@ -149,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
               )
             ],
           ),
-          // const SizedBox(height: 0.0),
+          const SizedBox(height: 0.0),
         ],
       ),
     );

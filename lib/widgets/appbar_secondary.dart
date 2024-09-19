@@ -28,12 +28,18 @@ class AppBarSecondary extends StatelessWidget {
                       color: Colors.white, size: 24.0),
                 ),
               ),
-              Text(title,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 22.0,
-                      fontFamily: 'Spartan MB',
-                      fontWeight: FontWeight.bold)),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(title,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 22.0,
+                          fontFamily: 'Spartan MB',
+                          fontWeight: FontWeight.bold)),
+                ),
+              ),
               const SizedBox(width: 38.0)
             ],
           ),
