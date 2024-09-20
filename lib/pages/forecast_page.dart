@@ -38,10 +38,11 @@ class _ForecastPageState extends State<ForecastPage> {
     _forecastBank.clear();
     _hourlyBank.clear();
 
+    /// Get weatherData from OpenWeatherMap
     weatherData = await WeatherHelper().getWeatherForecast48h7d(
         exclude: 'hourly,daily', lat: widget.lat, lon: widget.lon);
 
-    /// 3 Hourly data
+    /// Collecting 3 Hourly data to hourly data
     hourlyData = weatherData['list'];
     List jsonListHourly = hourlyData;
     for (var element in jsonListHourly) {

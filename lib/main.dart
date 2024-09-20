@@ -13,7 +13,6 @@ Future<void> main()  async {
   /// Load theme preference before building the app
   final themeProvider = ThemeProvider();
   await themeProvider.loadThemePreference();
-
   runApp(ChangeNotifierProvider(
     create: (context) => themeProvider,
     child: const MyApp(),
