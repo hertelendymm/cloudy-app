@@ -17,15 +17,19 @@ dependencies:
   geolocator: ^13.0.1
   provider: ^6.1.2
   shared_preferences: ^2.3.2
+  flutter_launcher_icons: ^0.13.1
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
   flutter_lints: ^4.0.0
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/CloudyAnimeIcon3.png"
 
 flutter:
   uses-material-design: true
