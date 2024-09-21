@@ -136,6 +136,7 @@ class _ForecastPageState extends State<ForecastPage> {
       _forecastBank.add(ListTileWeatherHourly(forecast: _hourlyBank[i]));
     }
 
+    /// Add footnote about the API provider
     _forecastBank.add(
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0),
