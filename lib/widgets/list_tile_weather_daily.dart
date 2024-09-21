@@ -13,7 +13,7 @@ class ListTileWeatherDaily extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
       child: Column(
         children: [
           Row(
@@ -27,7 +27,7 @@ class ListTileWeatherDaily extends StatelessWidget {
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
-                          fontSize: 22.0,
+                          fontSize: 24.0,
                           fontFamily: 'Spartan MB',
                           // fontWeight: FontWeight.bold,
                         ))),
@@ -51,7 +51,7 @@ class ListTileWeatherDaily extends StatelessWidget {
                       textAlign: TextAlign.end,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 20.0,
+                        fontSize: 24.0,
                         fontFamily: 'Spartan MB',
                         fontWeight: FontWeight.bold,
                       )),

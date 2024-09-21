@@ -8,13 +8,14 @@ class TitleDividerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 40, 20, 20.0),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title,
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.primary,
+                  // color: Theme.of(context).colorScheme.secondary,
                   // color: Colors.grey.shade400,
                   fontSize: 20.0,
                   fontFamily: 'Spartan MB',

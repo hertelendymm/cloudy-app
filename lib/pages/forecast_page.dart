@@ -9,7 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ForecastPage extends StatefulWidget {
-  const ForecastPage({super.key, required this.lon, required this.lat, required this.cityName});
+  const ForecastPage(
+      {super.key,
+      required this.lon,
+      required this.lat,
+      required this.cityName});
 
   final String lon;
   final String lat;
@@ -85,6 +89,7 @@ class _ForecastPageState extends State<ForecastPage> {
 
     /// Add title widget for the ListView.builder
     _forecastBank.add(const TitleDividerTile(title: "DAILY FORECAST"));
+
     /// Calculate average temperature and create daily forecasts
     groupedForecasts.forEach((date, hourlyForecasts) {
       double averageTemp = hourlyForecasts
@@ -105,27 +110,43 @@ class _ForecastPageState extends State<ForecastPage> {
           findMostFrequentForecast(hourlyForecasts);
 
       ForecastModel foreacastOfTheDay = ForecastModel(
-          weatherIcon: mostFrequentForecast.weatherIcon,
-          mainText: mostFrequentForecast.mainText,
-          descriptionText: mostFrequentForecast.descriptionText,
-          timeText: dayOfWeek,
-          isDailyForecast: true,
-          dateTime: [
-            date.toLocal().year,
-            date.toLocal().month,
-            date.toLocal().day
-          ],
-          tempText: "${averageTemp.round()}°C",
-        );
+        weatherIcon: mostFrequentForecast.weatherIcon,
+        mainText: mostFrequentForecast.mainText,
+        descriptionText: mostFrequentForecast.descriptionText,
+        timeText: dayOfWeek,
+        isDailyForecast: true,
+        dateTime: [
+          date.toLocal().year,
+          date.toLocal().month,
+          date.toLocal().day
+        ],
+        tempText: "${averageTemp.round()}°C",
+      );
       _forecastBank.add(ListTileWeatherDaily(forecast: foreacastOfTheDay));
     });
 
+    ///Add space between daily and hourlu data
+    _forecastBank.add(const SizedBox(height: 40.0));
+
     /// Add title widget for the ListView.builder
     _forecastBank.add(const TitleDividerTile(title: "48 HOUR FORECAST"));
+
     /// Add hourly data to the _forecastBank
     for (int i = 0; i < 17; i++) {
       _forecastBank.add(ListTileWeatherHourly(forecast: _hourlyBank[i]));
     }
+
+    _forecastBank.add(
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20.0),
+        child: Center(
+            child: Text('Data provided by OpenWeatherMap',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 12.0,
+                    fontFamily: 'Spartan MB'))),
+      ),
+    );
 
     /// refresh UI
     setState(() {
@@ -161,7 +182,9 @@ class _ForecastPageState extends State<ForecastPage> {
       body: SafeArea(
         child: Column(children: [
           AppBarSecondary(title: widget.cityName),
-          _isLoading ? const Expanded(child: LoadingPage()): showForecastContent(),
+          _isLoading
+              ? const Expanded(child: LoadingPage())
+              : showForecastContent(),
         ]),
       ),
     );

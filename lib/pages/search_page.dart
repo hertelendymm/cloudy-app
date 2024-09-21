@@ -58,12 +58,11 @@ class _SearchPageState extends State<SearchPage> {
                       function: () => Navigator.pop(context, cityName)),
                   const SizedBox(height: 20.0),
                   Center(
-                    child: Text('Data provided by OpenWeatherMap',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 12.0,
-                            fontFamily: 'Spartan MB')),
-                  )
+                      child: Text('Data provided by OpenWeatherMap',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 12.0,
+                              fontFamily: 'Spartan MB')))
                 ],
               ),
             )
