@@ -44,8 +44,6 @@ class AppBarSecondary extends StatelessWidget {
             ],
           ),
         ),
-        // Container(
-        //     width: double.infinity, height: 1, color: Theme.of(context).colorScheme.primary)
       ],
     );
   }
