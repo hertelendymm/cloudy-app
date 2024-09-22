@@ -33,10 +33,6 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Cloudy ',
       theme: Provider.of<ThemeProvider>(context).themeData,
-      // theme: ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      //   useMaterial3: true,
-      // ),
       home: const HomePage(),
     );
   }
